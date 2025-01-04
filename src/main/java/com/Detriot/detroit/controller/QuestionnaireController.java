@@ -1,4 +1,4 @@
-package com.Detriot.detroit.Controller;
+package com.Detriot.detroit.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

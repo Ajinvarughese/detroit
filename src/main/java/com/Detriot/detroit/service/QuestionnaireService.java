@@ -1,4 +1,4 @@
-package com.Detriot.detroit.Service;
+package com.Detriot.detroit.service;
 
 public class QuestionnaireService {
 }
