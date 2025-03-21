@@ -14,7 +14,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class QuestionController {
     private final QuestionService questionService;
-
     //Get all questions
     @GetMapping
     public ResponseEntity<List<Question>> getAllQuestions() {
@@ -27,9 +26,40 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.getQuestionById(id));
     }
 
+    // Get questions by questionnaire ID
+    @GetMapping("/questionnaire/{questionnaire_id}")
+    public ResponseEntity<List<Question>> getQuestionsByQuestionnaireId(@PathVariable Long questionnaireId) {
+        return ResponseEntity.ok(questionService.getQuestionsByQuestionnaireId(questionnaireId));
+    }
+
+    // Add a question to a questionnaire
+    @PostMapping("/questionnaire/{questionnaireId}")
+    public ResponseEntity<Question> addQuestion(@PathVariable Long questionnaireId, @RequestBody Question question) {
+        return ResponseEntity.ok(questionService.addQuestion(questionnaireId, question));
+    }
+
+    // Update an existing question
+    @PutMapping("/{id}")
+    public ResponseEntity<Question> updateQuestion(@PathVariable Long id, @RequestBody Question question) {
+        try {
+            return ResponseEntity.ok(questionService.updateQuestion(id, question));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteQuestion(@PathVariable Long id) {
+        try {
+            questionService.deleteQuestion(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     /*
         TODO:
-              * Get question by questionnaire
               * Add a new question to a questionnaire
               * Update an existing question
               * Delete a question
