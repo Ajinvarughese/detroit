@@ -57,12 +57,4 @@ public class QuestionController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    /*
-        TODO:
-              * Add a new question to a questionnaire
-              * Update an existing question
-              * Delete a question
-
-    */
 }
