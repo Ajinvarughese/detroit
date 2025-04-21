@@ -11,7 +11,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-
 public class QuestionnaireService {
 
     private final QuestionnaireRepository questionnaireRepository;
