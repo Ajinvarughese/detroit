@@ -1,11 +1,11 @@
 package com.Detriot.detroit.entity;
 
+import com.Detriot.detroit.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.management.relation.Role;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,9 +13,6 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
-
-
 public class User {
 
     @Id

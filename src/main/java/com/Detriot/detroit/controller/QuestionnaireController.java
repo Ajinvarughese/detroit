@@ -14,7 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 public class QuestionnaireController {
     private final QuestionnaireService questionnaireService;
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
     //Get all questions
     @GetMapping
     public ResponseEntity<List<Questionnaire>> getAllQuestionnaire(){
