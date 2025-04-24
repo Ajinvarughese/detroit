@@ -1,4 +1,4 @@
-package com.Detriot.detroit.entity;
+package com.Detriot.detroit.entity.enums;
 
 public enum QuestionType {
     TEXT,

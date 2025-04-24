@@ -2,7 +2,6 @@ package com.Detriot.detroit.controller;
 
 import com.Detriot.detroit.entity.Questionnaire;
 import com.Detriot.detroit.service.QuestionnaireService;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 public class QuestionnaireController {
     private final QuestionnaireService questionnaireService;
+
+    public QuestionnaireController(QuestionnaireService questionnaireService) {
+        this.questionnaireService = questionnaireService;
+    }
 
     //Get all questions
     @GetMapping

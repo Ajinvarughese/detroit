@@ -1,5 +1,6 @@
 package com.Detriot.detroit.entity;
 
+import com.Detriot.detroit.entity.enums.QuestionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
