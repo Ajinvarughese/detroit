@@ -19,7 +19,6 @@ import java.util.List;
 public class Questionnaire {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private long id;
 
     private String title;
@@ -36,5 +35,4 @@ public class Questionnaire {
 
     @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> questions;
-
 }
