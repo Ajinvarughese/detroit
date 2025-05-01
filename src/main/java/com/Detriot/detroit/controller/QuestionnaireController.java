@@ -26,6 +26,12 @@ public class QuestionnaireController {
         return ResponseEntity.ok(questionnaireService.getQuestionnaireById(id));
     }
 
+    // Create a new questionnaire
+    @PostMapping
+    public ResponseEntity<Questionnaire> addQuestionnaire(@RequestBody Questionnaire questionnaire) {
+        return ResponseEntity.ok(questionnaireService.addQuestionnaire(questionnaire));
+    }
+
     // Update an existing questionnaire
     @PutMapping("/{id}")
     public ResponseEntity<Questionnaire> updateQuestionnaire(@PathVariable Long id ,@RequestBody Questionnaire questionnaire) {
@@ -46,15 +52,5 @@ public class QuestionnaireController {
             return ResponseEntity.notFound().build();
         }
     }
-
-
- /*
-        TODO:
-              * Get all question
-              * Get questionnaire by ID
-              * Update an existing questionnaire
-              * Delete a questionnaire
-
-    */
 }
 

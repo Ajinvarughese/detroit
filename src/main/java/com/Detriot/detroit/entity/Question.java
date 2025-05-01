@@ -1,6 +1,7 @@
 package com.Detriot.detroit.entity;
 
 import com.Detriot.detroit.entity.enums.QuestionType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class Question {
 
     @ManyToOne
     @JoinColumn(name = "questionnaire_id", nullable = false)
+    @JsonIgnore
     private Questionnaire questionnaire;
 
     @Column(name="question_text", nullable = false)
