@@ -1,6 +1,6 @@
-package com.Detriot.detroit.repository;
+package com.Detriot.detroit.repository.sf;
 
-import com.Detriot.detroit.entity.User;
+import com.Detriot.detroit.entity.sf.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

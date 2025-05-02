@@ -1,9 +1,9 @@
-package com.Detriot.detroit.service;
+package com.Detriot.detroit.service.questionnaire;
 
-import com.Detriot.detroit.entity.Question;
-import com.Detriot.detroit.entity.Questionnaire;
-import com.Detriot.detroit.repository.QuestionRepository;
-import com.Detriot.detroit.repository.QuestionnaireRepository;
+import com.Detriot.detroit.entity.questionnaire.Question;
+import com.Detriot.detroit.entity.questionnaire.Questionnaire;
+import com.Detriot.detroit.repository.questionnaire.QuestionRepository;
+import com.Detriot.detroit.repository.questionnaire.QuestionnaireRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

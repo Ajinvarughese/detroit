@@ -1,4 +1,4 @@
-package com.Detriot.detroit.entity;
+package com.Detriot.detroit.entity.questionnaire;
 
 import com.Detriot.detroit.entity.enums.QuestionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;

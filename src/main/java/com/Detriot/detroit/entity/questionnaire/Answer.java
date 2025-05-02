@@ -1,4 +1,4 @@
-package com.Detriot.detroit.entity;
+package com.Detriot.detroit.entity.questionnaire;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

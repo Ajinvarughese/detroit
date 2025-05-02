@@ -1,7 +1,7 @@
-package com.Detriot.detroit.controller;
+package com.Detriot.detroit.controller.questionnaire;
 
-import com.Detriot.detroit.entity.Choice;
-import com.Detriot.detroit.service.ChoiceService;
+import com.Detriot.detroit.entity.questionnaire.Choice;
+import com.Detriot.detroit.service.questionnaire.ChoiceService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +10,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/choices")
-@AllArgsConstructor
 public class ChoiceController {
 
     private final ChoiceService choiceService;
+
+    public ChoiceController(ChoiceService choiceService) {
+        this.choiceService = choiceService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Choice>> getAllChoices() {

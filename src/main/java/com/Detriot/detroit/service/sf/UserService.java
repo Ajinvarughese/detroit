@@ -1,9 +1,8 @@
-package com.Detriot.detroit.service;
+package com.Detriot.detroit.service.sf;
 
-import com.Detriot.detroit.entity.User;
-import com.Detriot.detroit.repository.UserRepository;
+import com.Detriot.detroit.entity.sf.User;
+import com.Detriot.detroit.repository.sf.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

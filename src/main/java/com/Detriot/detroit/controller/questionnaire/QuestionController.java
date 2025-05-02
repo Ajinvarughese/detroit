@@ -1,19 +1,23 @@
-package com.Detriot.detroit.controller;
+package com.Detriot.detroit.controller.questionnaire;
 
-import com.Detriot.detroit.entity.Question;
-import com.Detriot.detroit.service.QuestionService;
+import com.Detriot.detroit.entity.questionnaire.Question;
+import com.Detriot.detroit.service.questionnaire.QuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/question")
-@AllArgsConstructor
+
 public class QuestionController {
     private final QuestionService questionService;
+
+    public QuestionController(QuestionService questionService) {
+        this.questionService = questionService;
+    }
+
     //Get all questions
     @GetMapping
     public ResponseEntity<List<Question>> getAllQuestions() {

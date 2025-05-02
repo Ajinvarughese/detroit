@@ -1,8 +1,7 @@
-package com.Detriot.detroit.controller;
+package com.Detriot.detroit.controller.questionnaire;
 
-import com.Detriot.detroit.entity.Answer;
-import com.Detriot.detroit.service.AnswerService;
-import jakarta.persistence.Id;
+import com.Detriot.detroit.entity.questionnaire.Answer;
+import com.Detriot.detroit.service.questionnaire.AnswerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

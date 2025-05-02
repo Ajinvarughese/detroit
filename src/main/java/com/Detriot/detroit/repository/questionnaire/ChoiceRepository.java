@@ -1,6 +1,6 @@
-package com.Detriot.detroit.repository;
+package com.Detriot.detroit.repository.questionnaire;
 
-import com.Detriot.detroit.entity.Choice;
+import com.Detriot.detroit.entity.questionnaire.Choice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

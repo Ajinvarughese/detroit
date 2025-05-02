@@ -1,8 +1,7 @@
-package com.Detriot.detroit.controller;
+package com.Detriot.detroit.controller.sf;
 
-import com.Detriot.detroit.entity.User;
-import com.Detriot.detroit.service.UserService;
-import lombok.Getter;
+import com.Detriot.detroit.entity.sf.User;
+import com.Detriot.detroit.service.sf.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

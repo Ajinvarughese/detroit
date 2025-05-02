@@ -1,4 +1,4 @@
-package com.Detriot.detroit.entity;
+package com.Detriot.detroit.entity.sf;
 
 import com.Detriot.detroit.entity.enums.Role;
 import jakarta.persistence.*;
