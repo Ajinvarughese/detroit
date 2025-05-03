@@ -1,4 +1,4 @@
-package com.Detriot.detroit.repository;
+package com.Detriot.detroit.repository.sf;
 
 import com.Detriot.detroit.entity.sf.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;

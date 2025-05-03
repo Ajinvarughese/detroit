@@ -1,7 +1,7 @@
 package com.Detriot.detroit.service.sf;
 
 import com.Detriot.detroit.entity.sf.Transaction;
-import com.Detriot.detroit.repository.TransactionRepository;
+import com.Detriot.detroit.repository.sf.TransactionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,6 @@ package com.Detriot.detroit.controller.questionnaire;
 
 import com.Detriot.detroit.entity.questionnaire.Question;
 import com.Detriot.detroit.service.questionnaire.QuestionService;
-import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
