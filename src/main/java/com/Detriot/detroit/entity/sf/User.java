@@ -1,6 +1,7 @@
 package com.Detriot.detroit.entity.sf;
 
 import com.Detriot.detroit.entity.enums.Role;
+import com.Detriot.detroit.entity.enums.SubRole;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,6 +30,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    private SubRole subRole;
 
     private String phone;
 

@@ -1,0 +1,127 @@
+--CREATE TABLE user_role (
+--    id INT PRIMARY KEY AUTO_INCREMENT,
+--    role_name VARCHAR(50) NOT NULL UNIQUE
+--);
+--
+--CREATE TABLE user_subrole (
+--    id INT PRIMARY KEY AUTO_INCREMENT,
+--    role_id INT NOT NULL,
+--    subrole_name VARCHAR(50) NOT NULL,
+--    FOREIGN KEY (role_id) REFERENCES user_role(id)
+--);
+--
+---- Insert roles
+--INSERT INTO user_role (role_name) VALUES ('ADMIN'), ('BANK'), ('APPLICANT');
+--
+---- Insert subroles for BANK
+--INSERT INTO user_subrole (role_id, subrole_name)
+--VALUES
+--(2, 'SF_SERVICE'),
+--(2, 'RULES_SERVICE'),
+--(2, 'QUESTIONNAIRE_SERVICE');
+--
+---- Insert subroles for APPLICANT
+--INSERT INTO user_subrole (role_id, subrole_name)
+--VALUES
+--(3, 'INDIVIDUAL'),
+--(3, 'ENTERPRISE'),
+--(3, 'GOVERNMENT');
+--
+--
+---- Create table for main loan categories
+--CREATE TABLE loan_category (
+--    id INT AUTO_INCREMENT PRIMARY KEY,
+--    name VARCHAR(100) NOT NULL,
+--    description TEXT
+--);
+--
+---- Create table for loan subcategories linked to loan_category
+--CREATE TABLE loan_subcategory (
+--    id INT AUTO_INCREMENT PRIMARY KEY,
+--    name VARCHAR(100) NOT NULL,
+--    category_id INT NOT NULL,
+--    description TEXT,
+--    FOREIGN KEY (category_id) REFERENCES loan_category(id)
+--);
+--
+---- Seed loan categories
+--INSERT INTO loan_category (name, description) VALUES
+--('Green Loans', 'Finance environmental projects'),
+--('Social Loans', 'Address social issues and improve livelihoods'),
+--('Sustainability-Linked Loans', 'Tie interest rates to sustainability performance'),
+--('Climate Adaptation Loans', 'Help projects adapt to climate change'),
+--('Biodiversity & Conservation Loans', 'Preserve or restore ecosystems');
+--
+---- Seed subcategories for each loan category
+--INSERT INTO loan_subcategory (name, category_id, description) VALUES
+---- Green Loans
+--('Renewable Energy', 1, 'Solar, wind, etc.'),
+--('Green Buildings', 1, 'Sustainable construction'),
+--('Energy Efficiency', 1, 'Efficient appliances, retrofitting'),
+--('Clean Transportation', 1, 'Electric vehicles, public transport'),
+--
+---- Social Loans
+--('Affordable Housing', 2, 'Low-income housing'),
+--('Education', 2, 'Schools, ed-tech access'),
+--('Healthcare', 2, 'Clinics, health outreach'),
+--('Financial Inclusion', 2, 'Banking for underserved communities'),
+--
+---- Sustainability-Linked Loans
+--('Emissions Reduction Targets', 3, 'GHG reduction commitments'),
+--('Water Usage Efficiency', 3, 'Reduced water consumption'),
+--('Diversity Goals', 3, 'Inclusion metrics, gender equity'),
+--
+---- Climate Adaptation Loans
+--('Flood Defenses', 4, 'Infrastructure protection'),
+--('Drought-Resistant Farming', 4, 'Climate-adaptive agriculture'),
+--
+---- Biodiversity & Conservation Loans
+--('Reforestation', 5, 'Tree planting and restoration'),
+--('Marine Protection', 5, 'Coral reef conservation'),
+--('Wildlife Conservation', 5, 'Endangered species protection');
+--
+--
+--
+----INSERT INTO loan_subcategory (name, category_id, description) VALUES
+------ Green Loans (category_id = 1)
+----('Renewable Energy', 1, 'Solar, wind, etc.'),
+----('Green Buildings', 1, 'Sustainable construction'),
+----('Energy Efficiency', 1, 'Efficient appliances, retrofitting'),
+----('Clean Transportation', 1, 'Electric vehicles, public transport'),
+----('Waste Management', 1, 'Recycling, composting, waste-to-energy'),
+----('Sustainable Agriculture', 1, 'Organic farming, permaculture'),
+----('Green Infrastructure', 1, 'Eco-friendly urban development'),
+----('Carbon Capture & Storage', 1, 'CO₂ removal technologies'),
+----
+------ Social Loans (category_id = 2)
+----('Affordable Housing', 2, 'Low-income housing'),
+----('Education', 2, 'Schools, ed-tech access'),
+----('Healthcare', 2, 'Clinics, health outreach'),
+----('Financial Inclusion', 2, 'Banking for underserved communities'),
+----('SME Development', 2, 'Support for small and medium enterprises'),
+----('Job Creation', 2, 'Employment programs in underserved areas'),
+----('Food Security', 2, 'Agricultural access, nutrition programs'),
+----('Access to Clean Water', 2, 'Water sanitation and delivery'),
+----
+------ Sustainability-Linked Loans (category_id = 3)
+----('Emissions Reduction Targets', 3, 'GHG reduction commitments'),
+----('Water Usage Efficiency', 3, 'Reduced water consumption'),
+----('Diversity Goals', 3, 'Inclusion metrics, gender equity'),
+----('Waste Reduction Targets', 3, 'Commitment to reduce industrial waste'),
+----('Renewable Energy Use Targets', 3, 'Transition to clean energy mix'),
+----('Employee Well-being Goals', 3, 'Mental health and wellness programs'),
+----
+------ Climate Adaptation Loans (category_id = 4)
+----('Flood Defenses', 4, 'Infrastructure protection'),
+----('Drought-Resistant Farming', 4, 'Climate-adaptive agriculture'),
+----('Climate-Resilient Infrastructure', 4, 'Adaptation of buildings, roads'),
+----('Disaster Preparedness', 4, 'Early warning systems, shelters'),
+----('Coastal Protection', 4, 'Mangrove restoration, sea wall construction'),
+----
+------ Biodiversity & Conservation Loans (category_id = 5)
+----('Reforestation', 5, 'Tree planting and restoration'),
+----('Marine Protection', 5, 'Coral reef conservation'),
+----('Wildlife Conservation', 5, 'Endangered species protection'),
+----('Pollinator Habitat Restoration', 5, 'Support for bees and insects'),
+----('Sustainable Forestry', 5, 'Eco-certified logging and replanting'),
+----('Wetlands Protection', 5, 'Conservation of marshes and swamps');

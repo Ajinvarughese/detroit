@@ -1,5 +1,6 @@
 package com.Detriot.detroit.controller.sf;
 
+import com.Detriot.detroit.dto.Login;
 import com.Detriot.detroit.entity.sf.User;
 import com.Detriot.detroit.service.sf.UserService;
 import org.springframework.http.ResponseEntity;
@@ -34,11 +35,18 @@ public class UserController {
         return ResponseEntity.ok(userService.addUser(user));
     }
 
+    // Log in user
+    @PostMapping("/login")
+    public ResponseEntity<User> loginUser(@RequestBody Login loginCred) {
+        return ResponseEntity.ok(userService.getUserByEmail(loginCred.getEmail(), loginCred.getPassword()));
+    }
+
     //update a user
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id,@RequestBody User user){
         return ResponseEntity.ok(userService.updateUser(id, user));
     }
+
     // Delete a user
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id){
@@ -47,12 +55,3 @@ public class UserController {
     }
 
 }
-/*
-        TODO:
-              * Get All users !
-              * get a user by id
-              * Create a new user
-              * update an  user
-              * delete  an user by id
-
-    */
