@@ -1,6 +1,6 @@
 package com.Detriot.detroit.questionnaire.entity;
 
-import com.Detriot.detroit.entity.sf.User;
+import com.Detriot.detroit.sf.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
