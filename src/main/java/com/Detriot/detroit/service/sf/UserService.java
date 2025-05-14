@@ -44,6 +44,13 @@ public class UserService {
             throw new IllegalArgumentException("Wrong credentials");
         }
     }
+    //update password
+    public User updatePassword(String email, String password){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + email));
+        user.setPassword(passwordEncoder.encode(password));
+        return userRepository.save(user);
+    }
 
     //update an existing user
     public User updateUser(Long id, User updateUser){
