@@ -20,7 +20,7 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long transactionId;
+    private Long id;
 
     @Column(nullable = false)
     private Long loanId; // Can be a @ManyToOne to Loan later
