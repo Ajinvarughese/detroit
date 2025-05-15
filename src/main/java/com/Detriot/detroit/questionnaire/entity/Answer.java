@@ -1,5 +1,6 @@
 package com.Detriot.detroit.questionnaire.entity;
 
+import com.Detriot.detroit.library.EntityDetails;
 import com.Detriot.detroit.sf.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,15 +16,14 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Answer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private User userId;
+public class Answer extends EntityDetails {
+
+
+    private Long userId;
     //private Long questionnaireId;
     //private Long questionId;
     @Column(nullable = true)
-    private Choice choice;
+    private Long choice;
     private String answerText;
     @CreationTimestamp
     @Column(updatable = false)

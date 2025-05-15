@@ -3,6 +3,7 @@ package com.Detriot.detroit.sf.entity;
 
 import com.Detriot.detroit.enums.Role;
 import com.Detriot.detroit.enums.SubRole;
+import com.Detriot.detroit.library.EntityDetails;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,11 +16,8 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends EntityDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String fullName;
 
@@ -40,10 +38,4 @@ public class User {
 
     private String organization;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 }

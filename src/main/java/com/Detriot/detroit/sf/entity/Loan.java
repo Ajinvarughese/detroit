@@ -2,6 +2,7 @@ package com.Detriot.detroit.sf.entity;
 
 
 import com.Detriot.detroit.enums.LoanStatus;
+import com.Detriot.detroit.library.EntityDetails;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,11 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Loan {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Loan extends EntityDetails {
 
     @Column(nullable = false)
     private Long userId;
@@ -33,7 +30,4 @@ public class Loan {
     @Column(nullable = false)
     private LoanStatus status;
 
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
 }

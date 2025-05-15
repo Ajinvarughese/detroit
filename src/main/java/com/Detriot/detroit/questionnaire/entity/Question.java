@@ -1,26 +1,20 @@
 package com.Detriot.detroit.questionnaire.entity;
 
-import com.Detriot.detroit.entity.enums.QuestionType;
+import com.Detriot.detroit.enums.QuestionType;
+import com.Detriot.detroit.library.EntityDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Question {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Question extends EntityDetails {
 
     @ManyToOne
     @JoinColumn(name = "questionnaire_id", nullable = false)
@@ -34,11 +28,5 @@ public class Question {
     @Column(name="question_type", nullable = false)
     private QuestionType questionType;
 
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }

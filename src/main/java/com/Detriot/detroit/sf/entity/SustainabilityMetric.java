@@ -1,5 +1,6 @@
 package com.Detriot.detroit.sf.entity;
 
+import com.Detriot.detroit.library.EntityDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,11 +16,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "sustainability_metrics")
-public class SustainabilityMetric {
+public class SustainabilityMetric extends EntityDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String metricName;
 
@@ -28,8 +26,4 @@ public class SustainabilityMetric {
     private String unit;
 
     private String description;
-
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
 }
