@@ -5,10 +5,10 @@ import com.Detriot.detroit.enums.LoanStatus;
 import com.Detriot.detroit.library.EntityDetails;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
