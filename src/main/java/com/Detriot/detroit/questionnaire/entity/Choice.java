@@ -13,7 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Choice extends EntityDetails {
-
     @Column(name = "question_id", nullable = false)
     private Long questionId;
     @Column(name = "choice_text", nullable = false)

@@ -18,10 +18,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Answer extends EntityDetails {
 
+    @ManyToOne
+    private User user;
 
-    private Long userId;
-    //private Long questionnaireId;
-    //private Long questionId;
     @Column(nullable = true)
     private Long choice;
     private String answerText;
