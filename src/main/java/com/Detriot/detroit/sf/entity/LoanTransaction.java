@@ -18,8 +18,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transaction extends EntityDetails {
-
+public class LoanTransaction extends EntityDetails {
 
     @Column(nullable = false)
     private Long loanId; // Can be a @ManyToOne to Loan later

@@ -1,6 +1,6 @@
 package com.Detriot.detroit.sf.controller;
 
-import com.Detriot.detroit.sf.entity.Transaction;
+import com.Detriot.detroit.sf.entity.LoanTransaction;
 import com.Detriot.detroit.sf.service.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,22 +18,22 @@ public class TransactionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Transaction>> getAllTransactions() {
+    public ResponseEntity<List<LoanTransaction>> getAllTransactions() {
         return ResponseEntity.ok(transactionService.getAllTransactions());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id) {
+    public ResponseEntity<LoanTransaction> getTransactionById(@PathVariable Long id) {
         return ResponseEntity.ok(transactionService.getTransactionById(id));
     }
 
     @GetMapping("/loan/{loanId}")
-    public ResponseEntity<List<Transaction>> getTransactionsByLoanId(@PathVariable Long loanId) {
+    public ResponseEntity<List<LoanTransaction>> getTransactionsByLoanId(@PathVariable Long loanId) {
         return ResponseEntity.ok(transactionService.getTransactionsByLoanId(loanId));
     }
 
     @PostMapping
-    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction) {
+    public ResponseEntity<LoanTransaction> createTransaction(@RequestBody LoanTransaction transaction) {
         return ResponseEntity.ok(transactionService.createTransaction(transaction));
     }
 

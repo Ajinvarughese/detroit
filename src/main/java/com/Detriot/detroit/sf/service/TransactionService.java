@@ -1,7 +1,7 @@
 package com.Detriot.detroit.sf.service;
 
 
-import com.Detriot.detroit.sf.entity.Transaction;
+import com.Detriot.detroit.sf.entity.LoanTransaction;
 import com.Detriot.detroit.sf.repository.TransactionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -15,20 +15,20 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
 
-    public List<Transaction> getAllTransactions() {
+    public List<LoanTransaction> getAllTransactions() {
         return transactionRepository.findAll();
     }
 
-    public Transaction getTransactionById(Long id) {
+    public LoanTransaction getTransactionById(Long id) {
         return transactionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Transaction not found with id: " + id));
     }
 
-    public List<Transaction> getTransactionsByLoanId(Long loanId) {
+    public List<LoanTransaction> getTransactionsByLoanId(Long loanId) {
         return transactionRepository.findByLoanId(loanId);
     }
 
-    public Transaction createTransaction(Transaction transaction) {
+    public LoanTransaction createTransaction(LoanTransaction transaction) {
         return transactionRepository.save(transaction);
     }
 

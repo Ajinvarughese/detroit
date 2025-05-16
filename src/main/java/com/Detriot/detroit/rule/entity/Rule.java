@@ -1,5 +1,6 @@
 package com.Detriot.detroit.rule.entity;
 
+import com.Detriot.detroit.enums.RuleCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,32 +18,48 @@ public class Rule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String naceCodes;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private RuleCategory ruleCategory;
+
+
+    private String nace;
 
     private String sector;
 
+    @Column(name = "activity_number")
+    private String activityNumber;
+
+    @Column(name = "activity")
     private String activityName;
 
+    @Column(name = "contribution_type", columnDefinition = "TEXT")
     private String contributionType;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "substantial_contribution_criteria", columnDefinition = "TEXT")
     private String substantialCriteria;
 
-    @Column(columnDefinition = "TEXT")
-    private String climateAdaptationDNSH;
+    @Column(name = "climate_mitigation_dnsh", columnDefinition = "TEXT")
+    private String climateMitigation;
 
-    @Column(columnDefinition = "TEXT")
-    private String waterDNSH;
-
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "circular_economy_dnsh", columnDefinition = "TEXT")
     private String circularEconomyDNSH;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "climate_adaptation_dnsh", columnDefinition = "TEXT")
+    private String climateAdaptationDNSH;
+
+    @Column(name = "water_dnsh", columnDefinition = "TEXT")
+    private String waterDNSH;
+
+    @Column(name = "pollution_prevention_dnsh", columnDefinition = "TEXT")
     private String pollutionPreventionDNSH;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "biodiversity_dnsh", columnDefinition = "TEXT")
     private String biodiversityDNSH;
+
+    @Column(name = "footnotes", columnDefinition = "TEXT")
+    private String footNotes;
 }

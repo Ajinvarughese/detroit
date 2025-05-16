@@ -1,13 +1,13 @@
 package com.Detriot.detroit.sf.repository;
 
 
-import com.Detriot.detroit.sf.entity.Transaction;
+import com.Detriot.detroit.sf.entity.LoanTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    List<Transaction> findByLoanId(Long loanId);
+public interface TransactionRepository extends JpaRepository<LoanTransaction, Long> {
+    List<LoanTransaction> findByLoanId(Long loanId);
 }
