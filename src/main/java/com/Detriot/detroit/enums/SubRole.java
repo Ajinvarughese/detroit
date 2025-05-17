@@ -2,7 +2,6 @@ package com.Detriot.detroit.enums;
 
 
 public enum SubRole {
-    INDIVIDUAL, // Applicant
     ENTERPRISE, // Applicant
     GOVERNMENT, // Applicant
     SF_SERVICE, // Bank

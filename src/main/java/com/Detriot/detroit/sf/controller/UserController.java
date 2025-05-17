@@ -38,7 +38,7 @@ public class UserController {
     // Log in user
     @PostMapping("/login")
     public ResponseEntity<User> loginUser(@RequestBody Login loginCred) {
-        return ResponseEntity.ok(userService.getUserByEmail(loginCred.getEmail(), loginCred.getPassword()));
+        return ResponseEntity.ok(userService.getUserByEmail(loginCred));
     }
 
     //update a user

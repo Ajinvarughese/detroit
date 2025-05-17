@@ -1,6 +1,7 @@
 package com.Detriot.detroit.sf.service;
 
 
+import com.Detriot.detroit.dto.Login;
 import com.Detriot.detroit.sf.entity.User;
 import com.Detriot.detroit.sf.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -36,14 +37,19 @@ public class UserService {
     }
 
     // Get user by email and verify password
-    public User getUserByEmail(String email, String password) throws EntityNotFoundException {
-        User findUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + email));
-        if (passwordEncoder.matches(password, findUser.getPassword())) {
-            return findUser;
-        } else {
+    public User getUserByEmail(Login login) throws EntityNotFoundException {
+        User findUser = userRepository.findByEmail(login.getEmail())
+                .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + login.getEmail()));
+        if(login.getEncrypted()) {
+            if(login.getPassword().equals(findUser.getPassword()) && login.getRole().equals(findUser.getRole())) {
+                return findUser;
+            }
             throw new IllegalArgumentException("Wrong credentials");
         }
+        else if (passwordEncoder.matches(login.getPassword(), findUser.getPassword()) && login.getRole().equals(findUser.getRole())) {
+            return findUser;
+        }
+        throw new IllegalArgumentException("Wrong credentials");
     }
     //update password
     public User updatePassword(String email, String password){

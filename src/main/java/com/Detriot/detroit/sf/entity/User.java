@@ -24,6 +24,7 @@ public class User extends EntityDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -32,6 +33,7 @@ public class User extends EntityDetails {
 
     private SubRole subRole;
 
+    @Column(unique = true, nullable = false)
     private String phone;
 
     private String address;
