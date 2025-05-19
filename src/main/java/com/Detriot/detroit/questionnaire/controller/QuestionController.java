@@ -23,29 +23,29 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.getAllQuestions());
     }
 
-    //Get Single question by ID
+    //Get a Single question by ID
     @GetMapping("/{id}")
     public ResponseEntity<Question> getQuestionById(@PathVariable Long id) {
         return ResponseEntity.ok(questionService.getQuestionById(id));
     }
 
     // Get questions by questionnaire ID
-    @GetMapping("/questionnaire/{questionnaire_id}")
+    @GetMapping("/questionnaire/{questionnaireId}")
     public ResponseEntity<List<Question>> getQuestionsByQuestionnaireId(@PathVariable Long questionnaireId) {
         return ResponseEntity.ok(questionService.getQuestionsByQuestionnaireId(questionnaireId));
     }
 
     // Add a question to a questionnaire
-    @PostMapping("/questionnaire/{questionnaireId}")
-    public ResponseEntity<Question> addQuestion(@PathVariable Long questionnaireId, @RequestBody Question question) {
-        return ResponseEntity.ok(questionService.addQuestion(questionnaireId, question));
+    @PostMapping
+    public ResponseEntity<Question> addQuestion(@RequestBody Question question) {
+        return ResponseEntity.ok(questionService.addQuestion(question));
     }
 
     // Update an existing question
-    @PutMapping("/{id}")
-    public ResponseEntity<Question> updateQuestion(@PathVariable Long id, @RequestBody Question question) {
+    @PutMapping
+    public ResponseEntity<Question> updateQuestion(@RequestBody Question question) {
         try {
-            return ResponseEntity.ok(questionService.updateQuestion(id, question));
+            return ResponseEntity.ok(questionService.updateQuestion(question));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }

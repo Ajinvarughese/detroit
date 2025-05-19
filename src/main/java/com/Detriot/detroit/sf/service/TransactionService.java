@@ -1,6 +1,5 @@
 package com.Detriot.detroit.sf.service;
 
-
 import com.Detriot.detroit.sf.entity.LoanTransaction;
 import com.Detriot.detroit.sf.repository.TransactionRepository;
 import jakarta.persistence.EntityNotFoundException;

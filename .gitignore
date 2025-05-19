@@ -35,3 +35,4 @@ build/
 
 ### ENV ###
 .env
+/src/main/resources/db.txt

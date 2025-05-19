@@ -26,6 +26,7 @@ public class AnswerService {
     public Answer saveAnswer(Answer answer){
         return answerRepository.save(answer);
     }
+
     public void deleteAnswer(Long id){
         if (!answerRepository.existsById(id)){
             throw new EntityNotFoundException("Answer not found with id:"+id);

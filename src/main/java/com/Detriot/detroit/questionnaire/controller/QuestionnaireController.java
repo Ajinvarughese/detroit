@@ -9,7 +9,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/questionnaire")
-
 public class QuestionnaireController {
     private final QuestionnaireService questionnaireService;
 
@@ -29,6 +28,12 @@ public class QuestionnaireController {
         return ResponseEntity.ok(questionnaireService.getQuestionnaireById(id));
     }
 
+    //Get questionnaire by form url id
+    @GetMapping("/form/{form_url_id}")
+    public ResponseEntity<Questionnaire> getQuestionnaireByFormUrlId(@PathVariable String form_url_id){
+        return ResponseEntity.ok(questionnaireService.getQuestionnaireByFormUrlId(form_url_id));
+    }
+
     // Create a new questionnaire
     @PostMapping
     public ResponseEntity<Questionnaire> addQuestionnaire(@RequestBody Questionnaire questionnaire) {
@@ -36,10 +41,10 @@ public class QuestionnaireController {
     }
 
     // Update an existing questionnaire
-    @PutMapping("/{id}")
-    public ResponseEntity<Questionnaire> updateQuestionnaire(@PathVariable Long id ,@RequestBody Questionnaire questionnaire) {
+    @PutMapping
+    public ResponseEntity<Questionnaire> updateQuestionnaire(@RequestBody Questionnaire questionnaire) {
         try {
-            return ResponseEntity.ok(questionnaireService.updateQuestionnaire(id ,questionnaire));
+            return ResponseEntity.ok(questionnaireService.updateQuestionnaire(questionnaire));
         }catch (IllegalArgumentException e){
             return ResponseEntity.notFound().build();
         }

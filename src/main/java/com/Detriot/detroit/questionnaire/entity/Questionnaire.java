@@ -17,13 +17,14 @@ import java.util.List;
 @NoArgsConstructor
 public class Questionnaire extends EntityDetails {
 
+    private String formUrlId;
+
     private String title;
 
     private String description;
 
     private LoanCategory loanCategory;
 
-    @OneToMany(mappedBy = "questionnaire", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Question> questions;
+    private String subCategory;
 
 }

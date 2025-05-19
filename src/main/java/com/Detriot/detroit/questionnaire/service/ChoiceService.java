@@ -36,6 +36,13 @@ public class ChoiceService {
         return choiceRepository.save(choice);
     }
 
+    public Choice updateChoice(Choice updatedChoice){
+        Choice existing = choiceRepository.findById(updatedChoice.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Choice not found with id: " + updatedChoice.getId()));
+        existing.setChoiceText(updatedChoice.getChoiceText());
+        return choiceRepository.save(existing);
+    }
+
 
     //Delete choice
     public void deleteChoice(Long id) {

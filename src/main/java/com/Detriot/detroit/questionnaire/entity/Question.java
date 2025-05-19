@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -18,7 +20,6 @@ public class Question extends EntityDetails {
 
     @ManyToOne
     @JoinColumn(name = "questionnaire_id", nullable = false)
-    @JsonIgnore
     private Questionnaire questionnaire;
 
     @Column(name="question_text", nullable = false)
@@ -27,6 +28,5 @@ public class Question extends EntityDetails {
     @Enumerated(EnumType.STRING)
     @Column(name="question_type", nullable = false)
     private QuestionType questionType;
-
 
 }

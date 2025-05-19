@@ -34,20 +34,28 @@ public class QuestionService {
     }
 
     //Add a new question to a questionnaire
-    public Question addQuestion(Long questionnaireId, Question question) {
-        Questionnaire questionnaire = questionnaireRepository.findById(questionnaireId)
-                .orElseThrow(() -> new IllegalArgumentException("No questionnaire found on id: "+questionnaireId));
+    public Question addQuestion(Question question) {
+
+        if (question.getQuestionnaire() == null || question.getQuestionnaire().getId() == null) {
+            throw new IllegalArgumentException("Questionnaire ID must be provided");
+        }
+
+        Questionnaire questionnaire = questionnaireRepository.findById(question.getQuestionnaire().getId())
+            .orElseThrow(() -> new IllegalArgumentException("No questionnaire found on id: " + question.getQuestionnaire().getId()));
+
         question.setQuestionnaire(questionnaire);
+
         return questionRepository.save(question);
     }
 
+
     //Update an existing question
-    public Question updateQuestion(Long id, Question updatedQuestion) {
-        return questionRepository.findById(id).map(question -> {
+    public Question updateQuestion(Question updatedQuestion) {
+        return questionRepository.findById(updatedQuestion.getId()).map(question -> {
             question.setQuestionText(updatedQuestion.getQuestionText());
             question.setQuestionType(updatedQuestion.getQuestionType());
             return questionRepository.save(question);
-        }).orElseThrow(() -> new IllegalArgumentException("Question not found with question id: "+id));
+        }).orElseThrow(() -> new IllegalArgumentException("Question not found with question id: "+updatedQuestion.getId()));
     }
 
     //Delete a question

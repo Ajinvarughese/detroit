@@ -37,6 +37,11 @@ public class ChoiceController {
         return ResponseEntity.ok(choiceService.addChoice(choice));
     }
 
+    @PutMapping
+    public ResponseEntity<Choice> updateChoice(@RequestBody Choice choice) {
+        return ResponseEntity.ok(choiceService.updateChoice(choice));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteChoice(@PathVariable Long id) {
         choiceService.deleteChoice(id);

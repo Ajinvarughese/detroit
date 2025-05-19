@@ -1,6 +1,7 @@
 package com.Detriot.detroit.questionnaire.entity;
 
 import com.Detriot.detroit.library.EntityDetails;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,10 +14,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Choice extends EntityDetails {
-    @Column(name = "question_id", nullable = false)
-    private Long questionId;
+
+    @ManyToOne
+    @JoinColumn(name = "question_id", nullable = false)
+    private Question question;
+
     @Column(name = "choice_text", nullable = false)
     private String choiceText;
+
 }
 
 
