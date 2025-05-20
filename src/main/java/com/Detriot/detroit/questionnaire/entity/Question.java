@@ -29,4 +29,5 @@ public class Question extends EntityDetails {
     @Column(name="question_type", nullable = false)
     private QuestionType questionType;
 
+    private String questionUUID;
 }
