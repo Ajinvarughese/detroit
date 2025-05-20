@@ -15,7 +15,6 @@ public class QuestionnaireService {
 
     private final QuestionnaireRepository questionnaireRepository;
 
-<<<<<<< Updated upstream
     //Get all questions
     public List<Questionnaire> getAllQuestionnaire(){ return questionnaireRepository.findAll(); }
 
@@ -38,41 +37,12 @@ public class QuestionnaireService {
     }
 
     //update an existing questionnaire
-    public Questionnaire updateQuestionnaire(Questionnaire updatedQuestionnaire){
-        return questionnaireRepository.findById(updatedQuestionnaire.getId()).map( questionnaire -> {
+    public Questionnaire updateQuestionnaire(Questionnaire updatedQuestionnaire) {
+        return questionnaireRepository.findById(updatedQuestionnaire.getId()).map(questionnaire -> {
             questionnaire.setTitle(updatedQuestionnaire.getTitle());
             questionnaire.setDescription(updatedQuestionnaire.getDescription());
             return questionnaireRepository.save(questionnaire);
-        }).orElseThrow(() -> new IllegalArgumentException("Questionnaire not found with id:"+updatedQuestionnaire.getId()));
-=======
-    public QuestionnaireService(QuestionnaireRepository questionnaireRepository) {
-        this.questionnaireRepository = questionnaireRepository;
-    }
-
-    // Get all questionnaires
-    public List<Questionnaire> getAllQuestionnaire() {
-        return questionnaireRepository.findAll();
-    }
-
-    // Get a specific questionnaire by ID
-    public Questionnaire getQuestionnaireById(Long id) {
-        return questionnaireRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Questionnaire not found with id: " + id));
-    }
-
-    // Create a new questionnaire
-    public Questionnaire addQuestionnaire(Questionnaire questionnaire) {
-        return questionnaireRepository.save(questionnaire);
-    }
-
-    // Update an existing questionnaire
-    public Questionnaire updateQuestionnaire(Long id, Questionnaire updatedQuestionnaire) {
-        return questionnaireRepository.findById(id).map(questionnaire -> {
-            questionnaire.setTitle(updatedQuestionnaire.getTitle());
-            questionnaire.setDescription(updatedQuestionnaire.getDescription());
-            return questionnaireRepository.save(questionnaire);
-        }).orElseThrow(() -> new IllegalArgumentException("Questionnaire not found with id: " + id));
->>>>>>> Stashed changes
+        }).orElseThrow(() -> new IllegalArgumentException("Questionnaire not found with id:" + updatedQuestionnaire.getId()));
     }
 
     // Delete a questionnaire by ID
