@@ -1,7 +1,11 @@
 package com.Detriot.detroit.enums;
 
 public enum LoanStatus {
+    CREATED,
     PENDING,
     APPROVED,
-    REPAID
+    REJECTED,
+    REPAID,
+    DISBURSED,
+    CLOSED
 }

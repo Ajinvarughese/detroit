@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TransactionRepository extends JpaRepository<LoanTransaction, Long> {
+public interface LoanTransactionRepository extends JpaRepository<LoanTransaction, Long> {
     List<LoanTransaction> findByLoanId(Long loanId);
 }
