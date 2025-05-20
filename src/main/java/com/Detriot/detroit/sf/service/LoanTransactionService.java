@@ -1,10 +1,8 @@
 package com.Detriot.detroit.sf.service;
 
-<<<<<<< Updated upstream:src/main/java/com/Detriot/detroit/sf/service/TransactionService.java
-=======
+
 import com.Detriot.detroit.enums.TransactionType;
 import com.Detriot.detroit.sf.entity.Loan;
->>>>>>> Stashed changes:src/main/java/com/Detriot/detroit/sf/service/LoanTransactionService.java
 import com.Detriot.detroit.sf.entity.LoanTransaction;
 import com.Detriot.detroit.sf.repository.LoanRepository;
 import com.Detriot.detroit.sf.repository.LoanTransactionRepository;
