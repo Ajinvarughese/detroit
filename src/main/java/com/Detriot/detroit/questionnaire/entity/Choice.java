@@ -22,6 +22,8 @@ public class Choice extends EntityDetails {
     @Column(name = "choice_text", nullable = false)
     private String choiceText;
 
+    private Long score;
+
 }
 
 

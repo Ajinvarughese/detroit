@@ -41,6 +41,7 @@ public class ChoiceService {
         Choice existing = choiceRepository.findById(updatedChoice.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Choice not found with id: " + updatedChoice.getId()));
         existing.setChoiceText(updatedChoice.getChoiceText());
+        existing.setScore(updatedChoice.getScore());
         return choiceRepository.save(existing);
     }
 
