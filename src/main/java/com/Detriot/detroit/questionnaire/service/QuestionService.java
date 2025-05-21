@@ -2,9 +2,11 @@ package com.Detriot.detroit.questionnaire.service;
 
 import com.Detriot.detroit.questionnaire.entity.Question;
 import com.Detriot.detroit.questionnaire.entity.Questionnaire;
+import com.Detriot.detroit.questionnaire.repository.ChoiceRepository;
 import com.Detriot.detroit.questionnaire.repository.QuestionRepository;
 import com.Detriot.detroit.questionnaire.repository.QuestionnaireRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final QuestionnaireRepository questionnaireRepository;
+    private final ChoiceRepository choiceRepository;
 
     //Get all questions
     public List<Question> getAllQuestions() {
@@ -59,10 +62,20 @@ public class QuestionService {
     }
 
     //Delete a question
+    @Transactional
     public void deleteQuestion(Long id) {
         if(!questionRepository.existsById(id)) {
             throw new IllegalArgumentException("Question not found with question id: "+id);
         }
+        choiceRepository.deleteByQuestionId(id);
         questionRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteQuestionsByQuestionnaireId(Long questionnaireId) {
+        if(!questionnaireRepository.existsById(questionnaireId)) {
+            throw new IllegalArgumentException("Questionnaire not found with questionnaire id: "+questionnaireId);
+        }
+        questionRepository.deleteByQuestionnaireId(questionnaireId);
     }
 }

@@ -5,6 +5,7 @@ import com.Detriot.detroit.questionnaire.repository.ChoiceRepository;
 import com.Detriot.detroit.questionnaire.repository.QuestionRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +51,13 @@ public class ChoiceService {
             throw new EntityNotFoundException("Choice not found with id: " + id);
         }
         choiceRepository.deleteById(id);
+    }
+
+    // Delete choices by question id
+    public void deleteChoicesByQuestionId(Long questionId) {
+        if (!questionRepository.existsById(questionId)) {
+            throw new EntityNotFoundException("Question not found with id: " + questionId);
+        }
+        choiceRepository.deleteByQuestionId(questionId);
     }
 }

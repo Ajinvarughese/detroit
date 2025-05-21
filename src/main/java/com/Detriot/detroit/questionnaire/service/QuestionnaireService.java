@@ -1,9 +1,13 @@
 package com.Detriot.detroit.questionnaire.service;
 
 import com.Detriot.detroit.dto.QuestionnaireResponseDto;
+import com.Detriot.detroit.questionnaire.entity.Question;
 import com.Detriot.detroit.questionnaire.entity.Questionnaire;
+import com.Detriot.detroit.questionnaire.repository.ChoiceRepository;
+import com.Detriot.detroit.questionnaire.repository.QuestionRepository;
 import com.Detriot.detroit.questionnaire.repository.QuestionnaireRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,8 @@ import java.util.List;
 public class QuestionnaireService {
 
     private final QuestionnaireRepository questionnaireRepository;
+    private final QuestionRepository questionRepository;
+    private final ChoiceRepository choiceRepository;
 
     //Get all questions
     public List<Questionnaire> getAllQuestionnaire(){ return questionnaireRepository.findAll(); }
@@ -46,13 +52,6 @@ public class QuestionnaireService {
         }).orElseThrow(() -> new IllegalArgumentException("Questionnaire not found with id:" + updatedQuestionnaire.getId()));
     }
 
-    // Delete a questionnaire by ID
-    public void deleteQuestionnaire(Long id) {
-        if (!questionnaireRepository.existsById(id)) {
-            throw new IllegalArgumentException("Questionnaire not found with id: " + id);
-        }
-        questionnaireRepository.deleteById(id);
-    }
 
     // Evaluate questionnaire responses and return score
     public int evaluateResponses(QuestionnaireResponseDto dto) {
@@ -73,5 +72,20 @@ public class QuestionnaireService {
     public boolean isEligible(int score, String category) {
         // You can apply different thresholds per category if needed
         return score >= 30; // Example threshold
+    }
+
+    //remove questionnaire
+    @Transactional
+    public void deleteQuestionnaire(Long id) {
+        Questionnaire questionnaire = questionnaireRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Questionnaire not found with id: " + id));
+
+        List<Question> questions = questionRepository.findByQuestionnaireId(id);
+        for (Question question : questions) {
+            choiceRepository.deleteByQuestionId(question.getId());
+        }
+        questionRepository.deleteByQuestionnaireId(id);
+        questionnaireRepository.deleteById(id);
+
     }
 }

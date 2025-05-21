@@ -47,5 +47,11 @@ public class ChoiceController {
         choiceService.deleteChoice(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/question/{questionId}")
+    public ResponseEntity<Void> deleteChoicesByQuestionId(@PathVariable Long questionId) {
+        choiceService.deleteChoicesByQuestionId(questionId);
+        return ResponseEntity.noContent().build();
+    }
 }
 
