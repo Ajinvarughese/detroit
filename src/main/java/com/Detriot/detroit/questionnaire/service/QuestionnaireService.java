@@ -41,6 +41,7 @@ public class QuestionnaireService {
         return questionnaireRepository.findById(updatedQuestionnaire.getId()).map(questionnaire -> {
             questionnaire.setTitle(updatedQuestionnaire.getTitle());
             questionnaire.setDescription(updatedQuestionnaire.getDescription());
+            questionnaire.setLoanCategory(updatedQuestionnaire.getLoanCategory());
             return questionnaireRepository.save(questionnaire);
         }).orElseThrow(() -> new IllegalArgumentException("Questionnaire not found with id:" + updatedQuestionnaire.getId()));
     }

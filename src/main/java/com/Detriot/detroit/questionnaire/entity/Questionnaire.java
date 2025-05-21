@@ -25,6 +25,4 @@ public class Questionnaire extends EntityDetails {
 
     private LoanCategory loanCategory;
 
-    private String subCategory;
-
 }

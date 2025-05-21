@@ -3,6 +3,7 @@ package com.Detriot.detroit.sf.service;
 import com.Detriot.detroit.dto.LoanApplicationRequest;
 import com.Detriot.detroit.dto.LoanDecisionResponse;
 import com.Detriot.detroit.dto.QuestionnaireResponseDto;
+import com.Detriot.detroit.enums.LoanCategory;
 import com.Detriot.detroit.enums.LoanStatus;
 import com.Detriot.detroit.questionnaire.service.QuestionnaireService;
 import com.Detriot.detroit.sf.entity.Loan;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -85,6 +88,13 @@ public class LoanService {
                 .orElseThrow(() -> new EntityNotFoundException("Loan not found with ID: " + loanId));
     }
 
+    // Get all loan categories
+    public List<String> getLoanCategories() {
+        return Arrays.stream(LoanCategory.values())
+                                        .map(Enum::name)
+                                        .collect(Collectors.toList());
+    }
+
     // Get all loans
     public List<Loan> getAllLoans() {
         return loanRepository.findAll();
@@ -101,7 +111,7 @@ public class LoanService {
         return loanRepository.findByUserId(userId);
     }
 
-    // Create new loan
+    // Create a new loan
     public Loan createLoan(Loan loan) {
         return loanRepository.save(loan);
     }
