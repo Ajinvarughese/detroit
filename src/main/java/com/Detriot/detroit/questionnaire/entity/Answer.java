@@ -21,13 +21,14 @@ public class Answer extends EntityDetails {
     @ManyToOne
     private User user;
 
-    @Column(nullable = true)
-    private Long choice;
+    @ManyToOne
+    @JoinColumn(name = "choice_id", nullable = true)
+    private Choice choice;
+
     private String answerText;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime submittedAt;
-
-
-
 }
+

@@ -1,6 +1,8 @@
 package com.Detriot.detroit.questionnaire.service;
 
+import com.Detriot.detroit.dto.QuestionnaireDTO;
 import com.Detriot.detroit.dto.QuestionnaireResponseDto;
+import com.Detriot.detroit.questionnaire.entity.Choice;
 import com.Detriot.detroit.questionnaire.entity.Question;
 import com.Detriot.detroit.questionnaire.entity.Questionnaire;
 import com.Detriot.detroit.questionnaire.repository.ChoiceRepository;
@@ -11,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +33,49 @@ public class QuestionnaireService {
         return questionnaireRepository.findById(id)
                 .orElseThrow(()-> new  EntityNotFoundException("Questionnaire not found with id: "+id));
     }
+
+    // Get the complete form
+    public QuestionnaireDTO getCompleteQuestionnaire(Long id) {
+
+        Questionnaire questionnaire = questionnaireRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Questionnaire not found with id: " + id));
+
+        // Questionnaire DTO
+        QuestionnaireDTO dto = new QuestionnaireDTO();
+        dto.setId(questionnaire.getId());
+        dto.setTitle(questionnaire.getTitle());
+        dto.setDescription(questionnaire.getDescription());
+        dto.setLoanCategory(questionnaire.getLoanCategory());
+
+        // Mapping questions
+        List<Question> questions = questionRepository.findByQuestionnaireId(id);
+        List<QuestionnaireDTO.QuestionDTO> questionDTOs = new ArrayList<>();
+
+        for (Question question : questions) {
+            QuestionnaireDTO.QuestionDTO questionDTO = new QuestionnaireDTO.QuestionDTO();
+            questionDTO.setId(question.getId());
+            questionDTO.setQuestionText(question.getQuestionText());
+            questionDTO.setQuestionUUID(question.getQuestionUUID());
+            questionDTO.setQuestionType(question.getQuestionType());
+
+            // Mapping choices
+            List<Choice> choices = choiceRepository.findByQuestionId(question.getId());
+            List<QuestionnaireDTO.ChoiceDTO> allChoices = new ArrayList<>();
+            for (Choice choice : choices) {
+                QuestionnaireDTO.ChoiceDTO choiceDTO = new QuestionnaireDTO.ChoiceDTO();
+                choiceDTO.setId(choice.getId());
+                choiceDTO.setChoiceText(choice.getChoiceText());
+                choiceDTO.setScore(choice.getScore());
+                allChoices.add(choiceDTO);
+            }
+
+            questionDTO.setChoices(allChoices);
+            questionDTOs.add(questionDTO);
+        }
+        dto.setQuestions(questionDTOs);
+        return dto;
+    }
+
 
     // Get questionnaire by form url id
     public Questionnaire getQuestionnaireByFormUrlId(String formUrlId){

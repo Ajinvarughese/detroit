@@ -1,5 +1,6 @@
 package com.Detriot.detroit.questionnaire.controller;
 
+import com.Detriot.detroit.dto.QuestionnaireDTO;
 import com.Detriot.detroit.questionnaire.entity.Questionnaire;
 import com.Detriot.detroit.questionnaire.service.QuestionnaireService;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,12 @@ public class QuestionnaireController {
     @GetMapping("/{id}")
     public ResponseEntity<Questionnaire> getQuestionnaireById(@PathVariable Long id){
         return ResponseEntity.ok(questionnaireService.getQuestionnaireById(id));
+    }
+
+    // Get complete questionnaire
+    @GetMapping("/u/form/{questionnaireId}")
+    public ResponseEntity<QuestionnaireDTO> getCompleteQuestionnaire(@PathVariable Long questionnaireId){
+        return ResponseEntity.ok(questionnaireService.getCompleteQuestionnaire(questionnaireId));
     }
 
     //Get questionnaire by form url id
