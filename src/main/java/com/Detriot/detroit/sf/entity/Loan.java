@@ -28,10 +28,11 @@ public class Loan extends EntityDetails {
     @Column(nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "duration_months", nullable = false)
+    // ex: 12months - where the applicant finishes loan repayment within 12 months
+    @Column(name = "duration_months")
     private Integer durationMonths;
 
-    @Column(name = "interest_rate", nullable = false)
+    @Column(name = "interest_rate")
     private BigDecimal interestRate;
 
     @Enumerated(EnumType.STRING)

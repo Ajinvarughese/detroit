@@ -5,7 +5,6 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-
 public class LoanDecisionResponse {
 
     private boolean eligible;

@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-
 public class LoanApplicationRequest {
 
     private Long userId;
