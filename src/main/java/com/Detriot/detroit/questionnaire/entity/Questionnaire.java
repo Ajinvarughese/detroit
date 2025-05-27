@@ -1,6 +1,7 @@
 package com.Detriot.detroit.questionnaire.entity;
 
 import com.Detriot.detroit.enums.LoanCategory;
+import com.Detriot.detroit.enums.QuestionnaireType;
 import com.Detriot.detroit.library.EntityDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,5 +25,7 @@ public class Questionnaire extends EntityDetails {
     private String description;
 
     private LoanCategory loanCategory;
+
+    private QuestionnaireType questionnaireType;
 
 }

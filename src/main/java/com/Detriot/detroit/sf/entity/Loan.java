@@ -3,6 +3,7 @@ package com.Detriot.detroit.sf.entity;
 import com.Detriot.detroit.enums.LoanCategory;
 import com.Detriot.detroit.enums.LoanStatus;
 import com.Detriot.detroit.library.EntityDetails;
+import com.Detriot.detroit.questionnaire.entity.Questionnaire;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -47,6 +48,9 @@ public class Loan extends EntityDetails {
 
     @Column(name = "amount_pending")
     private BigDecimal amount_Pending;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Questionnaire questionnaire;
 
     @Column(name = "questionnaire_score")
     private Integer questionnaireScore;

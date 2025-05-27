@@ -2,6 +2,7 @@ package com.Detriot.detroit.questionnaire.service;
 
 import com.Detriot.detroit.dto.QuestionnaireDTO;
 import com.Detriot.detroit.dto.QuestionnaireResponseDto;
+import com.Detriot.detroit.enums.LoanCategory;
 import com.Detriot.detroit.questionnaire.entity.Choice;
 import com.Detriot.detroit.questionnaire.entity.Question;
 import com.Detriot.detroit.questionnaire.entity.Questionnaire;
@@ -35,10 +36,10 @@ public class QuestionnaireService {
     }
 
     // Get the complete form
-    public QuestionnaireDTO getCompleteQuestionnaire(Long id) {
+    public QuestionnaireDTO getCompleteQuestionnaire(String urlId) {
 
-        Questionnaire questionnaire = questionnaireRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Questionnaire not found with id: " + id));
+        Questionnaire questionnaire = questionnaireRepository.findByFormUrlId(urlId)
+                .orElseThrow(() -> new EntityNotFoundException("Questionnaire not found with id: " + urlId));
 
         // Questionnaire DTO
         QuestionnaireDTO dto = new QuestionnaireDTO();
@@ -46,9 +47,10 @@ public class QuestionnaireService {
         dto.setTitle(questionnaire.getTitle());
         dto.setDescription(questionnaire.getDescription());
         dto.setLoanCategory(questionnaire.getLoanCategory());
+        dto.setQuestionnaireType(questionnaire.getQuestionnaireType());
 
         // Mapping questions
-        List<Question> questions = questionRepository.findByQuestionnaireId(id);
+        List<Question> questions = questionRepository.findByQuestionnaireId(questionnaire.getId());
         List<QuestionnaireDTO.QuestionDTO> questionDTOs = new ArrayList<>();
 
         for (Question question : questions) {
@@ -83,6 +85,11 @@ public class QuestionnaireService {
                 .orElseThrow(()-> new  EntityNotFoundException("Questionnaire not found with form url id: "+formUrlId));
     }
 
+    // Get forms by loan category
+    public List<Questionnaire> getQuestionnairesByLoanCategory(LoanCategory loanCategory){
+        return questionnaireRepository.findByLoanCategory(loanCategory);
+    }
+
     //Create a new Questionnaire
     public Questionnaire addQuestionnaire(Questionnaire questionnaire){
         return questionnaireRepository.save(questionnaire);
@@ -94,6 +101,7 @@ public class QuestionnaireService {
             questionnaire.setTitle(updatedQuestionnaire.getTitle());
             questionnaire.setDescription(updatedQuestionnaire.getDescription());
             questionnaire.setLoanCategory(updatedQuestionnaire.getLoanCategory());
+            questionnaire.setQuestionnaireType(updatedQuestionnaire.getQuestionnaireType());
             return questionnaireRepository.save(questionnaire);
         }).orElseThrow(() -> new IllegalArgumentException("Questionnaire not found with id:" + updatedQuestionnaire.getId()));
     }

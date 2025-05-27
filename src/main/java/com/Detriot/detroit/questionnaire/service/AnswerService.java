@@ -26,6 +26,9 @@ public class AnswerService {
     public Answer saveAnswer(Answer answer){
         return answerRepository.save(answer);
     }
+    public List<Answer> saveMultipleAnswers(List<Answer> answers){
+        return answerRepository.saveAll(answers);
+    }
 
     public void deleteAnswer(Long id){
         if (!answerRepository.existsById(id)){

@@ -34,9 +34,14 @@ public class AnswerController {
                 ResponseEntity.ok(answerService.getAnswerByUserId(userId));
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Answer> createAnswer(@RequestBody Answer answer) {
         return ResponseEntity.ok(answerService.saveAnswer(answer));
+    }
+
+    @PostMapping
+    public ResponseEntity<List<Answer>> createAnswers(@RequestBody List<Answer> answers) {
+        return ResponseEntity.ok(answerService.saveMultipleAnswers(answers));
     }
 
     @DeleteMapping("/{id}")

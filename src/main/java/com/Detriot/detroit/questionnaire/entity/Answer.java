@@ -26,9 +26,5 @@ public class Answer extends EntityDetails {
     private Choice choice;
 
     private String answerText;
-
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime submittedAt;
 }
 

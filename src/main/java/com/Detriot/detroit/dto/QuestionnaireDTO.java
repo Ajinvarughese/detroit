@@ -2,6 +2,7 @@ package com.Detriot.detroit.dto;
 
 import com.Detriot.detroit.enums.LoanCategory;
 import com.Detriot.detroit.enums.QuestionType;
+import com.Detriot.detroit.enums.QuestionnaireType;
 import lombok.Data;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public class QuestionnaireDTO {
     private String title;
     private String description;
     private LoanCategory loanCategory;
+    private QuestionnaireType questionnaireType;
     private List<QuestionDTO> questions;
 
     @Data

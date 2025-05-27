@@ -1,6 +1,7 @@
 package com.Detriot.detroit.questionnaire.controller;
 
 import com.Detriot.detroit.dto.QuestionnaireDTO;
+import com.Detriot.detroit.enums.LoanCategory;
 import com.Detriot.detroit.questionnaire.entity.Questionnaire;
 import com.Detriot.detroit.questionnaire.service.QuestionnaireService;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +31,14 @@ public class QuestionnaireController {
     }
 
     // Get complete questionnaire
-    @GetMapping("/u/form/{questionnaireId}")
-    public ResponseEntity<QuestionnaireDTO> getCompleteQuestionnaire(@PathVariable Long questionnaireId){
-        return ResponseEntity.ok(questionnaireService.getCompleteQuestionnaire(questionnaireId));
+    @GetMapping("/u/form/{form_url_id}")
+    public ResponseEntity<QuestionnaireDTO> getCompleteQuestionnaire(@PathVariable String form_url_id){
+        return ResponseEntity.ok(questionnaireService.getCompleteQuestionnaire(form_url_id));
+    }
+    // Get questionnaire by loan category
+    @GetMapping("/loan/{loan_category}")
+    public ResponseEntity<List<Questionnaire>> getQuestionnairesByLoanCategory(@PathVariable LoanCategory loan_category){
+        return ResponseEntity.ok(questionnaireService.getQuestionnairesByLoanCategory(loan_category));
     }
 
     //Get questionnaire by form url id
