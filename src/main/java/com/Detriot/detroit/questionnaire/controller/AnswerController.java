@@ -1,5 +1,6 @@
 package com.Detriot.detroit.questionnaire.controller;
 
+import com.Detriot.detroit.dto.AnswerDTO;
 import com.Detriot.detroit.questionnaire.entity.Answer;
 
 import com.Detriot.detroit.questionnaire.service.AnswerService;
@@ -40,7 +41,7 @@ public class AnswerController {
     }
 
     @PostMapping
-    public ResponseEntity<List<Answer>> createAnswers(@RequestBody List<Answer> answers) {
+    public ResponseEntity<List<Answer>> createAnswers(@RequestBody AnswerDTO answers) {
         return ResponseEntity.ok(answerService.saveMultipleAnswers(answers));
     }
 

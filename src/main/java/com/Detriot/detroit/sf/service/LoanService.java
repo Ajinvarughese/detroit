@@ -2,22 +2,32 @@ package com.Detriot.detroit.sf.service;
 
 import com.Detriot.detroit.dto.LoanApplicationRequest;
 import com.Detriot.detroit.dto.LoanDecisionResponse;
-import com.Detriot.detroit.dto.QuestionnaireResponseDto;
+import com.Detriot.detroit.dto.AnswerDTO;
 import com.Detriot.detroit.enums.LoanCategory;
 import com.Detriot.detroit.enums.LoanStatus;
+import com.Detriot.detroit.enums.QuestionType;
+import com.Detriot.detroit.questionnaire.entity.Answer;
+import com.Detriot.detroit.questionnaire.entity.Choice;
+import com.Detriot.detroit.questionnaire.entity.Question;
+import com.Detriot.detroit.questionnaire.entity.Questionnaire;
+import com.Detriot.detroit.questionnaire.repository.ChoiceRepository;
+import com.Detriot.detroit.questionnaire.repository.QuestionRepository;
+import com.Detriot.detroit.questionnaire.repository.QuestionnaireRepository;
+import com.Detriot.detroit.questionnaire.service.AnswerService;
 import com.Detriot.detroit.questionnaire.service.QuestionnaireService;
 import com.Detriot.detroit.sf.entity.Loan;
+import com.Detriot.detroit.sf.entity.User;
 import com.Detriot.detroit.sf.repository.LoanRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.NotAcceptableStatusException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,62 +35,63 @@ import java.util.stream.Collectors;
 
 public class LoanService {
 
-    @Autowired
     private final LoanRepository loanRepository;
-
-    @Autowired
+    private final QuestionnaireRepository questionnaireRepository;
     private final QuestionnaireService questionnaireService;
+    private final QuestionRepository questionRepository;
+    private final ChoiceRepository choiceRepository;
+    private final AnswerService answerService;
 
     // Process new loan application
-    public LoanDecisionResponse processLoanApplication(LoanApplicationRequest request) {
-        Loan loan = new Loan();
-        loan.setUserId(request.getUserId());
-        loan.setLoanCategory(request.getLoanCategory());
-        loan.setAmount(request.getAmountRequested());
-        loan.setDurationMonths(request.getDurationInMonths());
-
-        // Evaluate questionnaire
-        int score = questionnaireService.evaluateResponses(
-                new QuestionnaireResponseDto(
-                        request.getUserId().toString(),
-                        request.getLoanCategory().name(),
-                        request.getQuestionnaireResponses()
-                )
-        );
-        loan.setQuestionnaireScore(score);
-
-        boolean eligible = questionnaireService.isEligible(score, request.getLoanCategory().name());
-        loan.setIsEligible(eligible);
-
-        LoanDecisionResponse response = new LoanDecisionResponse();
-        response.setQuestionnaireScore(score);
-        response.setEligible(eligible);
-
-        if (eligible) {
-            BigDecimal annualInterest = new BigDecimal("0.08"); // 8% annual
-            BigDecimal monthlyInterest = annualInterest.divide(new BigDecimal("12"), 10, RoundingMode.HALF_UP);
-            int N = request.getDurationInMonths();
-            BigDecimal P = request.getAmountRequested();
-            BigDecimal onePlusRPowerN = (BigDecimal.ONE.add(monthlyInterest)).pow(N);
-            BigDecimal emi = P.multiply(monthlyInterest).multiply(onePlusRPowerN)
-                    .divide(onePlusRPowerN.subtract(BigDecimal.ONE), 2, RoundingMode.HALF_UP);
-
-            loan.setInterestRate(annualInterest);
-            loan.setLoanStartDate(LocalDateTime.now());
-            loan.setStatus(LoanStatus.APPROVED);
-            loan.setEligibilityReason("Approved based on eligibility score");
-
-            response.setEmi(emi);
-            response.setDecisionReason("Loan Approved");
-        } else {
-            loan.setStatus(LoanStatus.REJECTED);
-            loan.setEligibilityReason("Questionnaire score too low");
-            response.setDecisionReason("Loan Rejected due to low score");
-        }
-
-        loanRepository.save(loan);
-        return response;
-    }
+//    public LoanDecisionResponse processLoanApplication(LoanApplicationRequest request) {
+//        Loan loan = new Loan();
+//        loan.setUserId(request.getUserId());
+//        loan.setLoanCategory(request.getLoanCategory());
+//        loan.setAmount(request.getAmountRequested());
+//        loan.setDurationMonths(request.getDurationInMonths());
+//
+////        // Evaluate questionnaire
+////        int score = questionnaireService.evaluateResponses(
+////                new AnswerDTO(
+////                        request.getUserId().toString(),
+////                        request.getLoanCategory().name(),
+////                        request.getQuestionnaireResponses()
+////                )
+////        );
+//        loan.setQuestionnaireScore(score);
+//
+//        boolean eligible = questionnaireService.isEligible(score, request.getLoanCategory().name());
+//        loan.setIsEligible(eligible);
+//
+//        LoanDecisionResponse response = new LoanDecisionResponse();
+//        response.setQuestionnaireScore(score);
+//        response.setEligible(eligible);
+//
+//        if (eligible) {
+//            BigDecimal annualInterest = new BigDecimal("0.08"); // 8% annual
+//            BigDecimal monthlyInterest = annualInterest.divide(new BigDecimal("12"), 10, RoundingMode.HALF_UP);
+//            int N = request.getDurationInMonths();
+//            BigDecimal P = request.getAmountRequested();
+//            BigDecimal onePlusRPowerN = (BigDecimal.ONE.add(monthlyInterest)).pow(N);
+//            BigDecimal emi = P.multiply(monthlyInterest).multiply(onePlusRPowerN)
+//                    .divide(onePlusRPowerN.subtract(BigDecimal.ONE), 2, RoundingMode.HALF_UP);
+//
+//            loan.setInterestRate(annualInterest);
+//            loan.setLoanStartDate(LocalDateTime.now());
+//            loan.setStatus(LoanStatus.APPROVED);
+//            loan.setEligibilityReason("Approved based on eligibility score");
+//
+//            response.setEmi(emi);
+//            response.setDecisionReason("Loan Approved");
+//        } else {
+//            loan.setStatus(LoanStatus.REJECTED);
+//            loan.setEligibilityReason("Questionnaire score too low");
+//            response.setDecisionReason("Loan Rejected due to low score");
+//        }
+//
+//        loanRepository.save(loan);
+//        return response;
+//    }
 
     // Get full loan with payments
     public Loan getLoanWithPayments(Long loanId) {
@@ -111,9 +122,33 @@ public class LoanService {
         return loanRepository.findByUserId(userId);
     }
 
-    // Create a new loan
-    public Loan createLoan(Loan loan) {
-        return loanRepository.save(loan);
+
+    public Loan createLoan(AnswerDTO answerDTO) throws NotAcceptableStatusException {
+        Questionnaire questionnaire = questionnaireRepository.findById(answerDTO.getQuestionnaire().getId())
+                .orElseThrow(() -> new EntityNotFoundException("No questionnaire found with id: "+answerDTO.getQuestionnaire().getId()));
+        User user = answerDTO.getUser();
+        Integer score = answerService.calculateScore(answerDTO);
+        boolean isEligible = score >= 70;
+
+        if(isEligible) {
+            Loan newLoan = new Loan(
+                    user.getId(),
+                    questionnaire.getLoanCategory(),
+                    null,null,null,
+                    LoanStatus.CREATED,
+                    null,
+                    questionnaire,
+                    score,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            answerService.saveMultipleAnswers(answerDTO);
+            return loanRepository.save(newLoan);
+        }else {
+            throw new NotAcceptableStatusException("User not eligible");
+        }
     }
 
     // Update loan status
@@ -130,6 +165,8 @@ public class LoanService {
         updatedLoan.setId(existing.getId());
         return loanRepository.save(updatedLoan);
     }
+
+
 
     // Delete existing loan
     public void deleteLoan(Long loanId) {

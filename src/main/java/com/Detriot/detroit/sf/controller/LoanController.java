@@ -1,5 +1,6 @@
 package com.Detriot.detroit.sf.controller;
 
+import com.Detriot.detroit.dto.AnswerDTO;
 import com.Detriot.detroit.dto.LoanApplicationRequest;
 import com.Detriot.detroit.dto.LoanDecisionResponse;
 import com.Detriot.detroit.sf.entity.Loan;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/loans")
+@RequestMapping("api/loan")
 public class LoanController {
 
     private final LoanService loanService;
@@ -22,11 +23,11 @@ public class LoanController {
     }
 
     //  Submit a loan application
-    @PostMapping("/apply")
-    public ResponseEntity<LoanDecisionResponse> applyForLoan(@RequestBody LoanApplicationRequest request) {
-        LoanDecisionResponse response = loanService.processLoanApplication(request);
-        return ResponseEntity.ok(response);
-    }
+//    @PostMapping("/apply")
+//    public ResponseEntity<LoanDecisionResponse> applyForLoan(@RequestBody LoanApplicationRequest request) {
+//        LoanDecisionResponse response = loanService.processLoanApplication(request);
+//        return ResponseEntity.ok(response);
+//    }
 
     //  Get loan with payments
     @GetMapping("/with-payments/{loanId}")
@@ -60,8 +61,8 @@ public class LoanController {
 
     //  Create a loan manually (optional admin feature)
     @PostMapping
-    public ResponseEntity<Loan> createLoan(@RequestBody Loan loan) {
-        return ResponseEntity.ok(loanService.createLoan(loan));
+    public ResponseEntity<Loan> createLoan(@RequestBody AnswerDTO answerDTO) {
+        return ResponseEntity.ok(loanService.createLoan(answerDTO));
     }
 
     //  Update loan status (patch)

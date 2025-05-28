@@ -1,6 +1,7 @@
 package com.Detriot.detroit.questionnaire.repository;
 
 import com.Detriot.detroit.questionnaire.entity.Question;
+import com.Detriot.detroit.questionnaire.entity.Questionnaire;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +11,5 @@ import java.util.List;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findByQuestionnaireId(Long questionnaireId);
     void deleteByQuestionnaireId(Long questionnaireId);
+
 }

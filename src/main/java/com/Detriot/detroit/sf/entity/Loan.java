@@ -26,7 +26,6 @@ public class Loan extends EntityDetails {
     @Column(nullable = false)
     private LoanCategory loanCategory;
 
-    @Column(nullable = false)
     private BigDecimal amount;
 
     // ex: 12months - where the applicant finishes loan repayment within 12 months
@@ -40,16 +39,11 @@ public class Loan extends EntityDetails {
     @Column(nullable = false)
     private LoanStatus status;
 
-    @Column(name = "is_eligible")
-    private Boolean isEligible;
-
-    @Column(name = "eligibility_reason", length = 500)
-    private String eligibilityReason;
-
     @Column(name = "amount_pending")
     private BigDecimal amount_Pending;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne
+    @JoinColumn(name = "questionnaire_id", nullable = true)
     private Questionnaire questionnaire;
 
     @Column(name = "questionnaire_score")

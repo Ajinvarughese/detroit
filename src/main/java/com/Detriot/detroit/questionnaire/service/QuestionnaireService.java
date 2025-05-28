@@ -1,7 +1,6 @@
 package com.Detriot.detroit.questionnaire.service;
 
 import com.Detriot.detroit.dto.QuestionnaireDTO;
-import com.Detriot.detroit.dto.QuestionnaireResponseDto;
 import com.Detriot.detroit.enums.LoanCategory;
 import com.Detriot.detroit.questionnaire.entity.Choice;
 import com.Detriot.detroit.questionnaire.entity.Question;
@@ -106,27 +105,6 @@ public class QuestionnaireService {
         }).orElseThrow(() -> new IllegalArgumentException("Questionnaire not found with id:" + updatedQuestionnaire.getId()));
     }
 
-
-    // Evaluate questionnaire responses and return score
-    public int evaluateResponses(QuestionnaireResponseDto dto) {
-        List<String> responses = dto.getResponses();
-        int score = 0;
-
-        for (String answer : responses) {
-            // Simple scoring logic: "yes" answers get 10 points
-            if (answer != null && answer.trim().equalsIgnoreCase("yes")) {
-                score += 10;
-            }
-        }
-
-        return score;
-    }
-
-    // Determine if user is eligible based on score and loan category
-    public boolean isEligible(int score, String category) {
-        // You can apply different thresholds per category if needed
-        return score >= 30; // Example threshold
-    }
 
     //remove questionnaire
     @Transactional
