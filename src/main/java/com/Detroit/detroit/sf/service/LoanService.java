@@ -1,9 +1,11 @@
 package com.Detroit.detroit.sf.service;
 
 import com.Detroit.detroit.dto.AnswerDTO;
+import com.Detroit.detroit.dto.LoanApplication;
 import com.Detroit.detroit.dto.Login;
 import com.Detroit.detroit.enums.LoanCategory;
 import com.Detroit.detroit.enums.LoanStatus;
+import com.Detroit.detroit.library.FileUpload;
 import com.Detroit.detroit.questionnaire.entity.Questionnaire;
 import com.Detroit.detroit.questionnaire.repository.QuestionnaireRepository;
 import com.Detroit.detroit.questionnaire.service.AnswerService;
@@ -12,6 +14,7 @@ import com.Detroit.detroit.sf.entity.User;
 import com.Detroit.detroit.sf.repository.LoanRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +36,7 @@ public class LoanService {
     private final QuestionnaireRepository questionnaireRepository;
     private final AnswerService answerService;
     private PasswordEncoder passwordEncoder;
+    private FileUpload fileUpload;
 
     // Get full loan with payments
     public Loan getLoanWithPayments(Long loanId) {
@@ -53,9 +57,9 @@ public class LoanService {
     }
 
     // Get loan by id
-    public Loan getLoanById(Long loanId) {
-        return loanRepository.findById(loanId)
-                .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: " + loanId));
+    public Loan getLoanById(UUID loanUUID) {
+        return loanRepository.findByLoanUUID(loanUUID)
+                .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: " + loanUUID));
     }
     // Get loan by uuid
     public Loan getLoanByUUID(Login login, UUID uuid) {
@@ -106,37 +110,21 @@ public class LoanService {
     }
 
     // Update loan manually (if needed)
-    public Loan updateLoan(Loan updatedLoan, MultipartFile file) {
-
+    public Loan updateLoan(Loan updatedLoan) throws NotAcceptableStatusException, IllegalArgumentException {
         Loan existing = loanRepository.findById(updatedLoan.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: " + updatedLoan.getId()));
+
         if(!(existing.getUser().getId().equals(updatedLoan.getUser().getId())) && !(passwordEncoder.matches(updatedLoan.getUser().getPassword(), existing.getUser().getPassword()))) {
             throw new IllegalArgumentException("Loan user ID must match existing user ID");
         } else if (!(existing.getStatus().equals(LoanStatus.CREATED))) {
-            throw new IllegalArgumentException("Loan is already created");
-        } else if(file.isEmpty() || updatedLoan.getAmount() == null || updatedLoan.getLoanCategory() == null || updatedLoan.getDurationMonths() == null) {
-            throw new IllegalArgumentException("Loan amount, project report, loan category, and duration months must be provided");
+            throw new IllegalArgumentException("Loan application is already created");
+        } else if(updatedLoan.getProjectReportPath() == null || updatedLoan.getProjectName() == null || updatedLoan.getAmount() == null || updatedLoan.getLoanCategory() == null || updatedLoan.getDurationMonths() == null) {
+            throw new IllegalArgumentException("Loan amount, project report, loan category, project name and duration months must be provided");
         }
-        String projectReportPath = uploadFile(existing.getUser().getId(),file);
-        updatedLoan.setProjectReportPath(projectReportPath);
+        updatedLoan.setAmountPending(updatedLoan.getAmount());
         updatedLoan.setStatus(LoanStatus.PENDING);
         return loanRepository.save(updatedLoan);
     }
-
-    private String uploadFile(Long userId, MultipartFile file) {
-        try {
-            Path uploadPath = Paths.get(System.getProperty("user.dir"), "src", "main", "java", "com", "Detroit", "detroit", "projectReports");
-            if(!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-            Path filePath = uploadPath.resolve(userId+"_"+file.getOriginalFilename());
-            Files.write(filePath, file.getBytes());
-            return filePath.toString();
-        } catch (IOException e) {
-            return "Error uploading file: " + e.getMessage();
-        }
-    }
-
 
 
     // Delete existing loan

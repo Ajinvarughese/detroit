@@ -3,13 +3,18 @@ package com.Detroit.detroit.sf.controller;
 import com.Detroit.detroit.dto.AnswerDTO;
 import com.Detroit.detroit.dto.LoanApplication;
 import com.Detroit.detroit.dto.Login;
+import com.Detroit.detroit.library.FileUpload;
 import com.Detroit.detroit.sf.entity.Loan;
 import com.Detroit.detroit.sf.service.LoanService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,12 +23,12 @@ import java.util.UUID;
 public class LoanController {
 
     private final LoanService loanService;
+    private final FileUpload fileUpload;
 
-    @Autowired
-    public LoanController(LoanService loanService) {
+    public LoanController(LoanService loanService, FileUpload fileUpload) {
         this.loanService = loanService;
+        this.fileUpload = fileUpload;
     }
-
 
     //  Get loan with payments
     @GetMapping("/with-payments/{loanId}")
@@ -39,9 +44,9 @@ public class LoanController {
     }
 
     //  Get loan by ID
-    @GetMapping("/id/{loanId}")
-    public ResponseEntity<Loan> getLoanById(@PathVariable Long loanId) {
-        return ResponseEntity.ok(loanService.getLoanById(loanId));
+    @GetMapping("/{loanUUID}")
+    public ResponseEntity<Loan> getLoanById(@PathVariable String loanUUID) {
+        return ResponseEntity.ok(loanService.getLoanById(UUID.fromString(loanUUID)));
     }
 
     @PostMapping("/application/{loanUUID}")
@@ -69,11 +74,17 @@ public class LoanController {
 
 
     // Full update to a loan
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Loan> updateLoan(@ModelAttribute LoanApplication loanApplication) {
-        Loan updated = loanService.updateLoan(loanApplication.getLoan(), loanApplication.getProjectReport());
-        return ResponseEntity.ok(updated);
+    @PostMapping(path = "/file/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<String> uploadProjectReport(@RequestParam("projectReport") MultipartFile file) throws IOException {
+            String projectReportPath = fileUpload.uploadFile(file);
+            return ResponseEntity.ok(projectReportPath);
     }
+
+    @PutMapping
+    public ResponseEntity<Loan> updateLoan(@RequestBody Loan loan) {
+        return ResponseEntity.ok(loanService.updateLoan(loan));
+    }
+
 
     //  Delete a loan
     @DeleteMapping("/{loanId}")

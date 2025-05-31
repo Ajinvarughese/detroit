@@ -50,8 +50,8 @@ public class Loan extends EntityDetails {
     @Column(name = "questionnaire_score")
     private Integer questionnaireScore;
 
-    @Column(name = "document_verified")
-    private Boolean documentVerified = false;
+    @Column(name = "project_name")
+    private String projectName;
 
     @Column(name = "project_report_path")
     private String projectReportPath;
@@ -62,6 +62,6 @@ public class Loan extends EntityDetails {
     @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LoanPayment> payments;
 
-    @Column(name = "loan_url")
+    @Column(name = "loan_url", columnDefinition = "TEXT")
     private UUID loanUUID;
 }
