@@ -100,7 +100,9 @@ public class LoanService {
                     null,
                     null,
                     null,
-                    UUID.randomUUID()
+                    UUID.randomUUID(),
+                    true,
+                    false
             );
             answerService.saveMultipleAnswers(answerDTO);
             return loanRepository.save(newLoan);
@@ -124,6 +126,17 @@ public class LoanService {
         updatedLoan.setAmountPending(updatedLoan.getAmount());
         updatedLoan.setStatus(LoanStatus.PENDING);
         return loanRepository.save(updatedLoan);
+    }
+
+
+    public Loan newRequest(Loan loan) {
+        Loan existing = loanRepository.findById(loan.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Loan not found with id: " + loan.getId()));
+        existing.setAmount(loan.getAmount() != null ? loan.getAmount() : existing.getAmount());
+        existing.setInterestRate(loan.getInterestRate() != null ? loan.getInterestRate() : existing.getInterestRate());
+        existing.setDurationMonths(loan.getDurationMonths() != null ? loan.getDurationMonths() : existing.getDurationMonths());
+        existing.setStatus(LoanStatus.REQUESTED);
+        return loanRepository.save(existing);
     }
 
 

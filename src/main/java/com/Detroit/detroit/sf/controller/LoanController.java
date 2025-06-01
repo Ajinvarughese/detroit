@@ -1,7 +1,6 @@
 package com.Detroit.detroit.sf.controller;
 
 import com.Detroit.detroit.dto.AnswerDTO;
-import com.Detroit.detroit.dto.LoanApplication;
 import com.Detroit.detroit.dto.Login;
 import com.Detroit.detroit.library.FileUpload;
 import com.Detroit.detroit.sf.entity.Loan;
@@ -83,6 +82,11 @@ public class LoanController {
     @PutMapping
     public ResponseEntity<Loan> updateLoan(@RequestBody Loan loan) {
         return ResponseEntity.ok(loanService.updateLoan(loan));
+    }
+
+    @PutMapping("/newRequest")
+    public ResponseEntity<Loan> newRequest(@RequestBody Loan loan) {
+        return ResponseEntity.ok(loanService.newRequest(loan));
     }
 
 

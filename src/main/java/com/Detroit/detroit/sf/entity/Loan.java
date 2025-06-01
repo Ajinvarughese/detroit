@@ -64,4 +64,7 @@ public class Loan extends EntityDetails {
 
     @Column(name = "loan_url", columnDefinition = "TEXT")
     private UUID loanUUID;
+
+    private Boolean userAccepted;
+    private Boolean bankAccepted;
 }
