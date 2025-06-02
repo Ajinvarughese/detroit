@@ -62,7 +62,7 @@ public class Loan extends EntityDetails {
     @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LoanPayment> payments;
 
-    @Column(name = "loan_url", columnDefinition = "TEXT")
+    @Column(name = "loan_url")
     private UUID loanUUID;
 
     private Boolean userAccepted;

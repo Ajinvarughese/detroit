@@ -135,7 +135,36 @@ public class LoanService {
         existing.setAmount(loan.getAmount() != null ? loan.getAmount() : existing.getAmount());
         existing.setInterestRate(loan.getInterestRate() != null ? loan.getInterestRate() : existing.getInterestRate());
         existing.setDurationMonths(loan.getDurationMonths() != null ? loan.getDurationMonths() : existing.getDurationMonths());
+        existing.setAmountPending(loan.getAmount() != null ? loan.getAmount() : existing.getAmountPending());
+        existing.setUserAccepted(true);
+        existing.setBankAccepted(false);
         existing.setStatus(LoanStatus.REQUESTED);
+        return loanRepository.save(existing);
+    }
+
+    public Loan updateRequest(Loan loan) {
+        Loan existing = loanRepository.findById(loan.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Loan not found with id: " + loan.getId()));
+        if(loan.getStatus().equals(LoanStatus.REJECTED)) {
+            existing.setStatus(LoanStatus.REJECTED);
+            return loanRepository.save(existing);
+        }
+        if(
+                !(existing.getAmount().equals(loan.getAmount())) ||
+                        !(existing.getInterestRate().equals(loan.getInterestRate())) ||
+                        !(existing.getBankAccepted().equals(loan.getBankAccepted())))
+        {
+            existing.setAmount(loan.getAmount() != null ? loan.getAmount() : existing.getAmount());
+            existing.setInterestRate(loan.getInterestRate() != null ? loan.getInterestRate() : existing.getInterestRate());
+            existing.setDurationMonths(loan.getDurationMonths() != null ? loan.getDurationMonths() : existing.getDurationMonths());
+            existing.setAmountPending(loan.getAmount() != null ? loan.getAmount() : existing.getAmountPending());
+            existing.setUserAccepted(false);
+            existing.setBankAccepted(true);
+            existing.setStatus(LoanStatus.PENDING);
+            return loanRepository.save(existing);
+        }
+
+        existing.setStatus(LoanStatus.APPROVED);
         return loanRepository.save(existing);
     }
 

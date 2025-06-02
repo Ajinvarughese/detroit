@@ -89,6 +89,11 @@ public class LoanController {
         return ResponseEntity.ok(loanService.newRequest(loan));
     }
 
+    @PutMapping("/updateRequest")
+    public ResponseEntity<Loan> updateRequest(@RequestBody Loan loan) {
+        return ResponseEntity.ok(loanService.updateRequest(loan));
+    }
+
 
     //  Delete a loan
     @DeleteMapping("/{loanId}")
