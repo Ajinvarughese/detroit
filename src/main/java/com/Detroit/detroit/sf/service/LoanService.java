@@ -163,10 +163,13 @@ public class LoanService {
             existing.setStatus(LoanStatus.PENDING);
             return loanRepository.save(existing);
         }
-
-        existing.setStatus(LoanStatus.APPROVED);
         return loanRepository.save(existing);
     }
+
+//    public Loan approvedLoan(Loan loan) {
+//        Loan existing = loanRepository.findById(loan.getId())
+//                .orElseThrow(() -> new IllegalArgumentException("No loan found"));
+//    }
 
 
     // Delete existing loan
