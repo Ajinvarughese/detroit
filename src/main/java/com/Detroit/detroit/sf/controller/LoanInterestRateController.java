@@ -4,31 +4,34 @@ import com.Detroit.detroit.enums.LoanCategory;
 import com.Detroit.detroit.sf.entity.LoanInterestRate;
 import com.Detroit.detroit.sf.service.LoanInterestRateService;
 import lombok.AllArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/interest-rates")
-@AllArgsConstructor
-
 public class LoanInterestRateController {
 
     private final LoanInterestRateService service;
 
+    public LoanInterestRateController(LoanInterestRateService service) {
+        this.service = service;
+    }
+
     @GetMapping
-    public List<LoanInterestRate> getAllRates() {
-        return service.getAll();
+    public ResponseEntity<List<LoanInterestRate>> getAllRates() {
+        return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/{category}")
-    public LoanInterestRate getRate(@PathVariable LoanCategory category) {
-        return service.getByCategory(category);
+    public ResponseEntity<LoanInterestRate> getRate(@PathVariable LoanCategory category) {
+        return ResponseEntity.ok(service.getByCategory(category));
     }
 
-    @PutMapping("/{category}")
-    public LoanInterestRate updateRate(@PathVariable LoanCategory category,
-                                       @RequestParam double newRate) {
-        return service.updateRate(category, newRate);
+    @PutMapping()
+    public ResponseEntity<LoanInterestRate> updateRate(@RequestBody LoanInterestRate loanInterestRate) {
+        return ResponseEntity.ok(service.updateRate(loanInterestRate));
     }
 }

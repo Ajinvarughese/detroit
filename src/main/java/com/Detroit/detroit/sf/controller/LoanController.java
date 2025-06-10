@@ -4,6 +4,7 @@ import com.Detroit.detroit.dto.AnswerDTO;
 import com.Detroit.detroit.dto.Login;
 import com.Detroit.detroit.library.FileUpload;
 import com.Detroit.detroit.sf.entity.Loan;
+import com.Detroit.detroit.sf.entity.LoanPayment;
 import com.Detroit.detroit.sf.service.LoanService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,11 +95,21 @@ public class LoanController {
         return ResponseEntity.ok(loanService.updateRequest(loan));
     }
 
-
     //  Delete a loan
     @DeleteMapping("/{loanId}")
     public ResponseEntity<Void> deleteLoan(@PathVariable Long loanId) {
         loanService.deleteLoan(loanId);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @GetMapping("/payment")
+    public ResponseEntity<List<LoanPayment>> getAllPayment(@RequestBody Loan loan) {
+        return ResponseEntity.ok(loanService.getLoanPayments(loan));
+    }
+
+    @PostMapping("/payment")
+    public ResponseEntity<LoanPayment> addPayment(@RequestBody LoanPayment loanPayment) {
+        return ResponseEntity.ok(loanService.addPayment(loanPayment));
     }
 }

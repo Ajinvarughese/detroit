@@ -34,7 +34,7 @@ public class Loan extends EntityDetails {
     private Long durationMonths;
 
     @Column(name = "interest_rate")
-    private BigDecimal interestRate;
+    private Double interestRate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -64,7 +64,4 @@ public class Loan extends EntityDetails {
 
     @Column(name = "loan_url")
     private UUID loanUUID;
-
-    private Boolean userAccepted;
-    private Boolean bankAccepted;
 }

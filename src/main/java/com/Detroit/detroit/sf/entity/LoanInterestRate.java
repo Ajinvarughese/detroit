@@ -3,13 +3,17 @@ package com.Detroit.detroit.sf.entity;
 import com.Detroit.detroit.enums.LoanCategory;
 import com.Detroit.detroit.library.EntityDetails;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "loan_category")
 public class LoanInterestRate  extends EntityDetails {
 
     @Enumerated(EnumType.STRING)
@@ -18,27 +22,4 @@ public class LoanInterestRate  extends EntityDetails {
 
     @Column(nullable = false)
     private Double interestRate;
-
-    public LoanInterestRate() {}
-
-    public LoanInterestRate(LoanCategory loanCategory, Double interestRate) {
-        this.loanCategory = loanCategory;
-        this.interestRate = interestRate;
-    }
-
-    public LoanCategory getLoanCategory() {
-        return loanCategory;
-    }
-
-    public void setLoanCategory(LoanCategory loanCategory) {
-        this.loanCategory = loanCategory;
-    }
-
-    public Double getInterestRate() {
-        return interestRate;
-    }
-
-    public void setInterestRate(Double interestRate) {
-        this.interestRate = interestRate;
-    }
 }

@@ -22,7 +22,7 @@ public class RuleService {
 
     // Get rule by type
     public List<Rule> getRuleByType(LoanCategory category) {
-        return repository.findRuleByRuleCategory(category);
+        return repository.findByType(category);
     }
 
     // Add new rule
@@ -35,15 +35,15 @@ public class RuleService {
         Rule existingRule = repository.findById(updatedRule.getId())
             .orElseThrow(() -> new EntityNotFoundException("Rule not found with id: " + updatedRule.getId()));
 
-        existingRule.setRuleCategory(updatedRule.getRuleCategory());
+        existingRule.setType(updatedRule.getType());
         existingRule.setNace(updatedRule.getNace());
         existingRule.setSector(updatedRule.getSector());
         existingRule.setActivityNumber(updatedRule.getActivityNumber());
-        existingRule.setActivityName(updatedRule.getActivityName());
+        existingRule.setActivity(updatedRule.getActivity());
         existingRule.setContributionType(updatedRule.getContributionType());
         existingRule.setDescription(updatedRule.getDescription());
         existingRule.setSubstantialCriteria(updatedRule.getSubstantialCriteria());
-        existingRule.setClimateMitigation(updatedRule.getClimateMitigation());
+        existingRule.setClimateMitigationDNSH(updatedRule.getClimateMitigationDNSH());
         existingRule.setCircularEconomyDNSH(updatedRule.getCircularEconomyDNSH());
         existingRule.setClimateAdaptationDNSH(updatedRule.getClimateAdaptationDNSH());
         existingRule.setWaterDNSH(updatedRule.getWaterDNSH());

@@ -5,12 +5,15 @@ import com.Detroit.detroit.dto.LoanApplication;
 import com.Detroit.detroit.dto.Login;
 import com.Detroit.detroit.enums.LoanCategory;
 import com.Detroit.detroit.enums.LoanStatus;
+import com.Detroit.detroit.enums.Role;
 import com.Detroit.detroit.library.FileUpload;
 import com.Detroit.detroit.questionnaire.entity.Questionnaire;
 import com.Detroit.detroit.questionnaire.repository.QuestionnaireRepository;
 import com.Detroit.detroit.questionnaire.service.AnswerService;
 import com.Detroit.detroit.sf.entity.Loan;
+import com.Detroit.detroit.sf.entity.LoanPayment;
 import com.Detroit.detroit.sf.entity.User;
+import com.Detroit.detroit.sf.repository.LoanPaymentsRepository;
 import com.Detroit.detroit.sf.repository.LoanRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -36,7 +39,8 @@ public class LoanService {
     private final QuestionnaireRepository questionnaireRepository;
     private final AnswerService answerService;
     private PasswordEncoder passwordEncoder;
-    private FileUpload fileUpload;
+    private final LoanInterestRateService loanInterestRateService;
+    private final LoanPaymentsRepository loanPaymentsRepository;
 
     // Get full loan with payments
     public Loan getLoanWithPayments(Long loanId) {
@@ -85,13 +89,15 @@ public class LoanService {
                 .orElseThrow(() -> new EntityNotFoundException("No questionnaire found with id: "+answerDTO.getQuestionnaire().getId()));
         User user = answerDTO.getUser();
         Integer score = answerService.calculateScore(answerDTO);
-        boolean isEligible = score >= 70;
+        boolean isEligible = score >= 50;
 
         if(isEligible) {
             Loan newLoan = new Loan(
                     user,
                     questionnaire.getLoanCategory(),
-                    null,null,null,
+                    null,
+                    null,
+                    loanInterestRateService.getByCategory(questionnaire.getLoanCategory()).getInterestRate(),
                     LoanStatus.CREATED,
                     null,
                     questionnaire,
@@ -100,9 +106,7 @@ public class LoanService {
                     null,
                     null,
                     null,
-                    UUID.randomUUID(),
-                    true,
-                    false
+                    UUID.randomUUID()
             );
             answerService.saveMultipleAnswers(answerDTO);
             return loanRepository.save(newLoan);
@@ -124,7 +128,7 @@ public class LoanService {
             throw new IllegalArgumentException("Loan amount, project report, loan category, project name and duration months must be provided");
         }
         updatedLoan.setAmountPending(updatedLoan.getAmount());
-        updatedLoan.setStatus(LoanStatus.PENDING);
+        updatedLoan.setStatus(LoanStatus.REQUESTED);
         return loanRepository.save(updatedLoan);
     }
 
@@ -136,8 +140,6 @@ public class LoanService {
         existing.setInterestRate(loan.getInterestRate() != null ? loan.getInterestRate() : existing.getInterestRate());
         existing.setDurationMonths(loan.getDurationMonths() != null ? loan.getDurationMonths() : existing.getDurationMonths());
         existing.setAmountPending(loan.getAmount() != null ? loan.getAmount() : existing.getAmountPending());
-        existing.setUserAccepted(true);
-        existing.setBankAccepted(false);
         existing.setStatus(LoanStatus.REQUESTED);
         return loanRepository.save(existing);
     }
@@ -149,27 +151,31 @@ public class LoanService {
             existing.setStatus(LoanStatus.REJECTED);
             return loanRepository.save(existing);
         }
-        if(
-                !(existing.getAmount().equals(loan.getAmount())) ||
-                        !(existing.getInterestRate().equals(loan.getInterestRate())) ||
-                        !(existing.getBankAccepted().equals(loan.getBankAccepted())))
-        {
+        if(loan.getStatus().equals(LoanStatus.DISBURSED)) {
+            existing.setStatus(LoanStatus.DISBURSED);
+            return loanRepository.save(existing);
+        }
+        if (existing.getAmount().compareTo(loan.getAmount()) != 0 || existing.getDurationMonths().compareTo(loan.getDurationMonths()) != 0) {
             existing.setAmount(loan.getAmount() != null ? loan.getAmount() : existing.getAmount());
-            existing.setInterestRate(loan.getInterestRate() != null ? loan.getInterestRate() : existing.getInterestRate());
             existing.setDurationMonths(loan.getDurationMonths() != null ? loan.getDurationMonths() : existing.getDurationMonths());
             existing.setAmountPending(loan.getAmount() != null ? loan.getAmount() : existing.getAmountPending());
-            existing.setUserAccepted(false);
-            existing.setBankAccepted(true);
             existing.setStatus(LoanStatus.PENDING);
             return loanRepository.save(existing);
         }
+        existing.setStatus(LoanStatus.APPROVED);
         return loanRepository.save(existing);
     }
 
-//    public Loan approvedLoan(Loan loan) {
-//        Loan existing = loanRepository.findById(loan.getId())
-//                .orElseThrow(() -> new IllegalArgumentException("No loan found"));
-//    }
+    public List<LoanPayment> getLoanPayments(Loan loan) {
+        Loan existing = loanRepository.findById(loan.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: "+ loan.getId()));
+        return existing.getPayments();
+    }
+    public LoanPayment addPayment(LoanPayment loanPayment) {
+        Loan existing = loanRepository.findById(loanPayment.getLoan().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: "+loanPayment.getLoan().getId()));
+        return loanPaymentsRepository.save(loanPayment);
+    }
 
 
     // Delete existing loan

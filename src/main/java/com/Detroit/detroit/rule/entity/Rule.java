@@ -19,8 +19,7 @@ public class Rule {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
-    private LoanCategory ruleCategory;
+    private LoanCategory type;
 
 
     private String nace;
@@ -31,7 +30,7 @@ public class Rule {
     private String activityNumber;
 
     @Column(name = "activity")
-    private String activityName;
+    private String activity;
 
     @Column(name = "contribution_type", columnDefinition = "TEXT")
     private String contributionType;
@@ -43,7 +42,7 @@ public class Rule {
     private String substantialCriteria;
 
     @Column(name = "climate_mitigation_dnsh", columnDefinition = "TEXT")
-    private String climateMitigation;
+    private String climateMitigationDNSH;
 
     @Column(name = "circular_economy_dnsh", columnDefinition = "TEXT")
     private String circularEconomyDNSH;

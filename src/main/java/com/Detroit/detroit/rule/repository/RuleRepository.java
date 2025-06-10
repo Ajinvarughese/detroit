@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface RuleRepository extends JpaRepository<Rule, Long> {
-    List<Rule> findRuleByRuleCategory(LoanCategory category);
+    List<Rule> findByType(LoanCategory category);
 }
