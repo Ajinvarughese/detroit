@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -16,8 +15,8 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Loan extends EntityDetails {
 
     @ManyToOne
@@ -28,7 +27,9 @@ public class Loan extends EntityDetails {
     @Column(nullable = false)
     private LoanCategory loanCategory;
 
-    private BigDecimal amount;
+    private Double amount;
+
+    private Double amountPerMonth;
 
     @Column(name = "duration_months")
     private Long durationMonths;
@@ -41,7 +42,7 @@ public class Loan extends EntityDetails {
     private LoanStatus status;
 
     @Column(name = "amount_pending")
-    private BigDecimal amountPending;
+    private Double amountPending;
 
     @ManyToOne
     @JoinColumn(name = "questionnaire_id", nullable = true)
@@ -64,4 +65,8 @@ public class Loan extends EntityDetails {
 
     @Column(name = "loan_url")
     private UUID loanUUID;
+
+    private Double disburseAmount;
+    private Double disbursedAmount;
+
 }

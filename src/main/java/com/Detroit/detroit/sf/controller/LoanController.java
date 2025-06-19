@@ -2,6 +2,7 @@ package com.Detroit.detroit.sf.controller;
 
 import com.Detroit.detroit.dto.AnswerDTO;
 import com.Detroit.detroit.dto.Login;
+import com.Detroit.detroit.enums.LoanStatus;
 import com.Detroit.detroit.library.FileUpload;
 import com.Detroit.detroit.sf.entity.Loan;
 import com.Detroit.detroit.sf.entity.LoanPayment;
@@ -95,11 +96,21 @@ public class LoanController {
         return ResponseEntity.ok(loanService.updateRequest(loan));
     }
 
+    @PutMapping("/disbursed/{id}")
+    public ResponseEntity<Loan> disbursing(@PathVariable Long id, @RequestBody Loan loan) {
+        return ResponseEntity.ok(loanService.disbursing(id, loan));
+    }
+
     //  Delete a loan
     @DeleteMapping("/{loanId}")
     public ResponseEntity<Void> deleteLoan(@PathVariable Long loanId) {
         loanService.deleteLoan(loanId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/status")
+    public ResponseEntity<Loan> updateStatus(@RequestBody Loan loan) {
+        return ResponseEntity.ok(loanService.updateStatus(loan));
     }
 
 

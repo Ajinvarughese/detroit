@@ -25,11 +25,5 @@ public class LoanPayment extends EntityDetails {
     @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime paymentDate;
-
-    @Column(name = "is_on_time")
-    private Boolean isOnTime;
-
-    @Column(name = "remarks", length = 255)
-    private String remarks;
 }
 

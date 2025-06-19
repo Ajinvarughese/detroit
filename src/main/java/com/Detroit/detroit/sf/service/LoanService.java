@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.NotAcceptableStatusException;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -97,6 +98,7 @@ public class LoanService {
                     questionnaire.getLoanCategory(),
                     null,
                     null,
+                    null,
                     loanInterestRateService.getByCategory(questionnaire.getLoanCategory()).getInterestRate(),
                     LoanStatus.CREATED,
                     null,
@@ -106,7 +108,9 @@ public class LoanService {
                     null,
                     null,
                     null,
-                    UUID.randomUUID()
+                    UUID.randomUUID(),
+                    null,
+                    null
             );
             answerService.saveMultipleAnswers(answerDTO);
             return loanRepository.save(newLoan);
@@ -114,7 +118,18 @@ public class LoanService {
             throw new NotAcceptableStatusException("User not eligible");
         }
     }
+    public Loan disbursing(Long id, Loan loan) {
+        Loan existing = loanRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: "+id));
+        Double currentDisbursed = existing.getDisbursedAmount() != null
+            ? existing.getDisbursedAmount()
+            : 0.0;
+        currentDisbursed += loan.getDisburseAmount();
+        existing.setDisburseAmount(loan.getDisburseAmount());
+        existing.setDisbursedAmount(loan.getDisbursedAmount());
 
+        return loanRepository.save(existing);
+    }
     // Update loan manually (if needed)
     public Loan updateLoan(Loan updatedLoan) throws NotAcceptableStatusException, IllegalArgumentException {
         Loan existing = loanRepository.findById(updatedLoan.getId())
@@ -137,6 +152,7 @@ public class LoanService {
         Loan existing = loanRepository.findById(loan.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Loan not found with id: " + loan.getId()));
         existing.setAmount(loan.getAmount() != null ? loan.getAmount() : existing.getAmount());
+        existing.setAmountPerMonth(calculateAmountPerMonth(loan.getAmount(), loan.getInterestRate(), loan.getDurationMonths()));
         existing.setInterestRate(loan.getInterestRate() != null ? loan.getInterestRate() : existing.getInterestRate());
         existing.setDurationMonths(loan.getDurationMonths() != null ? loan.getDurationMonths() : existing.getDurationMonths());
         existing.setAmountPending(loan.getAmount() != null ? loan.getAmount() : existing.getAmountPending());
@@ -177,6 +193,13 @@ public class LoanService {
         return loanPaymentsRepository.save(loanPayment);
     }
 
+    public Loan updateStatus(Loan loan) {
+        Loan existing = loanRepository.findById(loan.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Loan not found with id+"+loan.getId()));
+        existing.setStatus(loan.getStatus());
+        return loanRepository.save(existing);
+    }
+
 
     // Delete existing loan
     public void deleteLoan(Long loanId) {
@@ -184,5 +207,10 @@ public class LoanService {
             throw new EntityNotFoundException("Loan not found with id: " + loanId);
         }
         loanRepository.deleteById(loanId);
+    }
+
+    public Double calculateAmountPerMonth(Double amount, Double interest, Long durationMonths) {
+        double oneMonth = amount/durationMonths;
+        return oneMonth*(interest/100);
     }
 }
