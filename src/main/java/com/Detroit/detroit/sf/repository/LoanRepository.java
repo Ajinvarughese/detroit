@@ -15,7 +15,4 @@ import java.util.UUID;
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     List<Loan> findByUserId(Long userId);
     Optional<Loan> findByLoanUUID(UUID uuid);
-
-    @Query("SELECT l FROM Loan l LEFT JOIN FETCH l.payments WHERE l.id = :loanId")
-    Optional<Loan> findByIdWithPayments(@Param("loanId") Long loanId);
 }

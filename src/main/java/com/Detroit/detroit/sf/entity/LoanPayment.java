@@ -20,7 +20,7 @@ public class LoanPayment extends EntityDetails {
     private Loan loan;
 
     @Column(nullable = false)
-    private BigDecimal amountPaid;
+    private Double amountPaid;
 
     @CreationTimestamp
     @Column(nullable = false)

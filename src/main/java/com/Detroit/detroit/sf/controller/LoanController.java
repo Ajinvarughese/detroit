@@ -31,12 +31,6 @@ public class LoanController {
         this.fileUpload = fileUpload;
     }
 
-    //  Get loan with payments
-    @GetMapping("/with-payments/{loanId}")
-    public ResponseEntity<Loan> getLoanWithPayments(@PathVariable Long loanId) {
-        Loan loan = loanService.getLoanWithPayments(loanId);
-        return ResponseEntity.ok(loan);
-    }
 
     // Get all loans
     @GetMapping
@@ -96,9 +90,9 @@ public class LoanController {
         return ResponseEntity.ok(loanService.updateRequest(loan));
     }
 
-    @PutMapping("/disbursed/{id}")
-    public ResponseEntity<Loan> disbursing(@PathVariable Long id, @RequestBody Loan loan) {
-        return ResponseEntity.ok(loanService.disbursing(id, loan));
+    @PutMapping("/disburse")
+    public ResponseEntity<Loan> disbursing(@RequestBody Loan loan) {
+        return ResponseEntity.ok(loanService.disbursing(loan));
     }
 
     //  Delete a loan

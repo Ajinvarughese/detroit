@@ -25,8 +25,6 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final ChoiceRepository choiceRepository;
     private final QuestionRepository questionRepository;
-    private final LoanRepository loanRepository;
-    private final QuestionnaireRepository questionnaireRepository;
 
     public List<Answer>getAllAnswers(){
         return answerRepository.findAll();

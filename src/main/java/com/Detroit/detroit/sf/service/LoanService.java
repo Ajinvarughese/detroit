@@ -1,12 +1,9 @@
 package com.Detroit.detroit.sf.service;
 
 import com.Detroit.detroit.dto.AnswerDTO;
-import com.Detroit.detroit.dto.LoanApplication;
 import com.Detroit.detroit.dto.Login;
 import com.Detroit.detroit.enums.LoanCategory;
 import com.Detroit.detroit.enums.LoanStatus;
-import com.Detroit.detroit.enums.Role;
-import com.Detroit.detroit.library.FileUpload;
 import com.Detroit.detroit.questionnaire.entity.Questionnaire;
 import com.Detroit.detroit.questionnaire.repository.QuestionnaireRepository;
 import com.Detroit.detroit.questionnaire.service.AnswerService;
@@ -17,17 +14,10 @@ import com.Detroit.detroit.sf.repository.LoanPaymentsRepository;
 import com.Detroit.detroit.sf.repository.LoanRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.NotAcceptableStatusException;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,12 +32,6 @@ public class LoanService {
     private PasswordEncoder passwordEncoder;
     private final LoanInterestRateService loanInterestRateService;
     private final LoanPaymentsRepository loanPaymentsRepository;
-
-    // Get full loan with payments
-    public Loan getLoanWithPayments(Long loanId) {
-        return loanRepository.findByIdWithPayments(loanId)
-                .orElseThrow(() -> new EntityNotFoundException("Loan not found with ID: " + loanId));
-    }
 
     // Get all loan categories
     public List<String> getLoanCategories() {
@@ -101,16 +85,15 @@ public class LoanService {
                     null,
                     loanInterestRateService.getByCategory(questionnaire.getLoanCategory()).getInterestRate(),
                     LoanStatus.CREATED,
-                    null,
+                    0.00,
                     questionnaire,
                     score,
                     null,
                     null,
                     null,
-                    null,
                     UUID.randomUUID(),
-                    null,
-                    null
+                    0.00,
+                    0.00
             );
             answerService.saveMultipleAnswers(answerDTO);
             return loanRepository.save(newLoan);
@@ -118,19 +101,23 @@ public class LoanService {
             throw new NotAcceptableStatusException("User not eligible");
         }
     }
-    public Loan disbursing(Long id, Loan loan) {
-        Loan existing = loanRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: "+id));
+    public Loan disbursing(Loan loan) {
+        Loan existing = loanRepository.findById(loan.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: "+loan.getId()));
         Double currentDisbursed = existing.getDisbursedAmount() != null
             ? existing.getDisbursedAmount()
             : 0.0;
         currentDisbursed += loan.getDisburseAmount();
         existing.setDisburseAmount(loan.getDisburseAmount());
         existing.setDisbursedAmount(loan.getDisbursedAmount());
+        if(existing.getDisbursedAmount() >= existing.getAmount()) {
+            existing.setStatus(LoanStatus.DISBURSED);
+        }
 
         return loanRepository.save(existing);
     }
-    // Update loan manually (if needed)
+
+
     public Loan updateLoan(Loan updatedLoan) throws NotAcceptableStatusException, IllegalArgumentException {
         Loan existing = loanRepository.findById(updatedLoan.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: " + updatedLoan.getId()));
@@ -143,6 +130,7 @@ public class LoanService {
             throw new IllegalArgumentException("Loan amount, project report, loan category, project name and duration months must be provided");
         }
         updatedLoan.setAmountPending(updatedLoan.getAmount());
+        updatedLoan.setAmountPerYear(calculateAmountPerYear(updatedLoan.getAmount(), updatedLoan.getInterestRate(), updatedLoan.getDurationMonths()));
         updatedLoan.setStatus(LoanStatus.REQUESTED);
         return loanRepository.save(updatedLoan);
     }
@@ -152,10 +140,9 @@ public class LoanService {
         Loan existing = loanRepository.findById(loan.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Loan not found with id: " + loan.getId()));
         existing.setAmount(loan.getAmount() != null ? loan.getAmount() : existing.getAmount());
-        existing.setAmountPerMonth(calculateAmountPerMonth(loan.getAmount(), loan.getInterestRate(), loan.getDurationMonths()));
-        existing.setInterestRate(loan.getInterestRate() != null ? loan.getInterestRate() : existing.getInterestRate());
         existing.setDurationMonths(loan.getDurationMonths() != null ? loan.getDurationMonths() : existing.getDurationMonths());
         existing.setAmountPending(loan.getAmount() != null ? loan.getAmount() : existing.getAmountPending());
+        existing.setAmountPerYear(calculateAmountPerYear(loan.getAmount(), loan.getInterestRate(), loan.getDurationMonths()));
         existing.setStatus(LoanStatus.REQUESTED);
         return loanRepository.save(existing);
     }
@@ -167,14 +154,11 @@ public class LoanService {
             existing.setStatus(LoanStatus.REJECTED);
             return loanRepository.save(existing);
         }
-        if(loan.getStatus().equals(LoanStatus.DISBURSED)) {
-            existing.setStatus(LoanStatus.DISBURSED);
-            return loanRepository.save(existing);
-        }
         if (existing.getAmount().compareTo(loan.getAmount()) != 0 || existing.getDurationMonths().compareTo(loan.getDurationMonths()) != 0) {
             existing.setAmount(loan.getAmount() != null ? loan.getAmount() : existing.getAmount());
             existing.setDurationMonths(loan.getDurationMonths() != null ? loan.getDurationMonths() : existing.getDurationMonths());
             existing.setAmountPending(loan.getAmount() != null ? loan.getAmount() : existing.getAmountPending());
+            existing.setAmountPerYear(calculateAmountPerYear(loan.getAmount(), loan.getInterestRate(), loan.getDurationMonths()));
             existing.setStatus(LoanStatus.PENDING);
             return loanRepository.save(existing);
         }
@@ -184,12 +168,19 @@ public class LoanService {
 
     public List<LoanPayment> getLoanPayments(Loan loan) {
         Loan existing = loanRepository.findById(loan.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: "+ loan.getId()));
-        return existing.getPayments();
+                .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: "+loan.getId()));
+        return loanPaymentsRepository.findByLoanId(existing.getId());
+
     }
+
     public LoanPayment addPayment(LoanPayment loanPayment) {
         Loan existing = loanRepository.findById(loanPayment.getLoan().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: "+loanPayment.getLoan().getId()));
+        existing.setAmountPending(existing.getAmountPending() - loanPayment.getAmountPaid());
+        if(existing.getAmountPending() <= 0) {
+            existing.setStatus(LoanStatus.REPAID);
+            loanRepository.save(existing);
+        }
         return loanPaymentsRepository.save(loanPayment);
     }
 
@@ -209,8 +200,9 @@ public class LoanService {
         loanRepository.deleteById(loanId);
     }
 
-    public Double calculateAmountPerMonth(Double amount, Double interest, Long durationMonths) {
-        double oneMonth = amount/durationMonths;
+    public Double calculateAmountPerYear(Double amount, Double interest, Long durationMonths) {
+        double oneMonth = amount/(durationMonths/12.0);
+        System.out.println(oneMonth*(interest/100));
         return oneMonth*(interest/100);
     }
 }

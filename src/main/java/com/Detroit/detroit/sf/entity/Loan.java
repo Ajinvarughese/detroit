@@ -9,7 +9,6 @@ import lombok.*;
 
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,7 +28,7 @@ public class Loan extends EntityDetails {
 
     private Double amount;
 
-    private Double amountPerMonth;
+    private Double amountPerYear;
 
     @Column(name = "duration_months")
     private Long durationMonths;
@@ -59,9 +58,6 @@ public class Loan extends EntityDetails {
 
     @Column(name = "loan_start_date")
     private LocalDateTime loanStartDate;
-
-    @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LoanPayment> payments;
 
     @Column(name = "loan_url")
     private UUID loanUUID;
