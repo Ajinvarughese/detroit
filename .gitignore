@@ -36,3 +36,4 @@ build/
 ### ENV ###
 .env
 /src/main/resources/db.txt
+/src/main/resources/uploads
