@@ -166,9 +166,9 @@ public class LoanService {
         return loanRepository.save(existing);
     }
 
-    public List<LoanPayment> getLoanPayments(Loan loan) {
-        Loan existing = loanRepository.findById(loan.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: "+loan.getId()));
+    public List<LoanPayment> getLoanPayments(UUID id) {
+        Loan existing = loanRepository.findByLoanUUID(id)
+                .orElseThrow(() -> new EntityNotFoundException("Loan not found with id: "+id));
         return loanPaymentsRepository.findByLoanId(existing.getId());
 
     }

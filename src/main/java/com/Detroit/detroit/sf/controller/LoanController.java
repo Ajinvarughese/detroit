@@ -108,9 +108,9 @@ public class LoanController {
     }
 
 
-    @GetMapping("/payment")
-    public ResponseEntity<List<LoanPayment>> getAllPayment(@RequestBody Loan loan) {
-        return ResponseEntity.ok(loanService.getLoanPayments(loan));
+    @GetMapping("/payment/{id}")
+    public ResponseEntity<List<LoanPayment>> getAllPayment(@PathVariable String id) {
+        return ResponseEntity.ok(loanService.getLoanPayments(UUID.fromString(id)));
     }
 
     @PostMapping("/payment")

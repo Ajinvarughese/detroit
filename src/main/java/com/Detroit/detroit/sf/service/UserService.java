@@ -37,6 +37,7 @@ public class UserService {
 
     // Get user by email and verify password
     public User getUserByEmail(Login login) throws EntityNotFoundException {
+
         User findUser = userRepository.findByEmail(login.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + login.getEmail()));
         if(login.getEncrypted()) {
@@ -45,7 +46,7 @@ public class UserService {
             }
             throw new IllegalArgumentException("Wrong credentials");
         }
-        else if (passwordEncoder.matches(login.getPassword(), findUser.getPassword()) && login.getRole().equals(findUser.getRole())) {
+        else if (passwordEncoder.matches(login.getPassword(), findUser.getPassword())) {
             return findUser;
         }
         throw new IllegalArgumentException("Wrong credentials");
