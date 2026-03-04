@@ -54,4 +54,10 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    // Suspend / Unsuspend a user (toggle)
+    @PutMapping("/{id}/suspend")
+    public ResponseEntity<User> toggleSuspendUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.toggleSuspend(id));
+    }
+
 }

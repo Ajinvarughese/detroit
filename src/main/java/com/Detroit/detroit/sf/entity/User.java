@@ -36,4 +36,7 @@ public class User extends EntityDetails {
 
     private String organization;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean suspended = false;
+
 }

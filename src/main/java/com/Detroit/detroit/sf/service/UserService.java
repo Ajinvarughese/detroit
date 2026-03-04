@@ -80,4 +80,12 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    // Toggle suspend status
+    public User toggleSuspend(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found at id: " + id));
+        user.setSuspended(!user.getSuspended());
+        return userRepository.save(user);
+    }
+
 }
