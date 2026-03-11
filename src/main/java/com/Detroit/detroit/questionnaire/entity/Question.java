@@ -2,11 +2,14 @@ package com.Detroit.detroit.questionnaire.entity;
 
 import com.Detroit.detroit.enums.QuestionType;
 import com.Detroit.detroit.library.EntityDetails;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,4 +30,8 @@ public class Question extends EntityDetails {
     private QuestionType questionType;
 
     private String questionUUID;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Choice> choices;
 }

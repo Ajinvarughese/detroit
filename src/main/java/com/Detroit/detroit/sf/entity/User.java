@@ -38,5 +38,4 @@ public class User extends EntityDetails {
 
     @Column(columnDefinition = "boolean default false")
     private Boolean suspended = false;
-
 }

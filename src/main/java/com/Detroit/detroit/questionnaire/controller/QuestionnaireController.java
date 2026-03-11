@@ -1,7 +1,9 @@
 package com.Detroit.detroit.questionnaire.controller;
 
 import com.Detroit.detroit.dto.QuestionnaireDTO;
+import com.Detroit.detroit.dto.QuestionnaireGenerationRequest;
 import com.Detroit.detroit.enums.LoanCategory;
+import com.Detroit.detroit.enums.QuestionnaireType;
 import com.Detroit.detroit.questionnaire.entity.Questionnaire;
 import com.Detroit.detroit.questionnaire.service.QuestionnaireService;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +37,7 @@ public class QuestionnaireController {
     public ResponseEntity<QuestionnaireDTO> getCompleteQuestionnaire(@PathVariable String form_url_id){
         return ResponseEntity.ok(questionnaireService.getCompleteQuestionnaire(form_url_id));
     }
+
     // Get questionnaire by loan category
     @GetMapping("/loan/{loan_category}")
     public ResponseEntity<List<Questionnaire>> getQuestionnairesByLoanCategory(@PathVariable LoanCategory loan_category){
@@ -51,6 +54,18 @@ public class QuestionnaireController {
     @PostMapping
     public ResponseEntity<Questionnaire> addQuestionnaire(@RequestBody Questionnaire questionnaire) {
         return ResponseEntity.ok(questionnaireService.addQuestionnaire(questionnaire));
+    }
+
+    @PostMapping("/ai/generate")
+    public ResponseEntity<Questionnaire> generateQuestionnaire(
+            @RequestBody QuestionnaireGenerationRequest request
+            ) {
+        return ResponseEntity.ok(
+                questionnaireService.generateAndSaveQuestionnaire(
+                        request.getInputData(),
+                        request.getLoanCategory()
+                )
+        );
     }
 
     // Update an existing questionnaire
