@@ -2,6 +2,7 @@ package com.Detroit.detroit.sf.service;
 
 
 import com.Detroit.detroit.dto.Login;
+import com.Detroit.detroit.exceptions.SuspendedUserException;
 import com.Detroit.detroit.sf.entity.User;
 import com.Detroit.detroit.sf.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -42,11 +43,17 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + login.getEmail()));
         if(login.getEncrypted()) {
             if(login.getPassword().equals(findUser.getPassword()) && login.getRole().equals(findUser.getRole())) {
+                if(findUser.getSuspended()) {
+                    throw new SuspendedUserException("Suspended User");
+                }
                 return findUser;
             }
             throw new IllegalArgumentException("Wrong credentials");
         }
         else if (passwordEncoder.matches(login.getPassword(), findUser.getPassword())) {
+            if(findUser.getSuspended()) {
+                throw new SuspendedUserException("Suspended User");
+            }
             return findUser;
         }
         throw new IllegalArgumentException("Wrong credentials");
