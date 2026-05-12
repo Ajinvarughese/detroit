@@ -54,7 +54,7 @@ public class QuestionnaireService {
         List<Rule> rules = ruleService.getRuleByType(loanCategory);
 
         List<RuleSummaryDTO> summarizedRules = rules.stream()
-                .limit(10) // hard limit to avoid token explosion
+                .limit(5) // hard limit to avoid token explosion
                 .map(r -> new RuleSummaryDTO(
                         r.getSector(),
                         r.getActivity(),
